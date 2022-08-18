@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textNoAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="168dp"
+        android:text="@string/textNoAcc"
+        android:textColor="#959595"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textReg"
+        tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+    <Button
+        android:id="@+id/btEnter"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="97dp"
+        android:layout_marginEnd="98dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/enter_btn"
+        android:backgroundTint="#197BDD"
+        android:text="@string/btEnter"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/textNoAcc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/plainPass"
+        android:layout_width="335dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="53dp"
+        android:autofillHints=""
+        android:background="@drawable/rectangle"
+        android:backgroundTint="#D0D0D0"
+        android:drawableLeft="@drawable/lock_for_pass"
+        android:drawablePadding="25dp"
+        android:elegantTextHeight="false"
+        android:ems="10"
+        android:freezesText="false"
+        android:hint="@string/plainPass"
+        android:inputType="textPassword"
+        android:paddingLeft="30dp"
+        android:textAllCaps="false"
+        android:textColor="#197BDD"
+        android:textColorHint="#D0D0D0"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/btEnter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/plainLogin"
+        android:layout_width="335dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        android:autofillHints=""
+        android:background="@drawable/rectangle"
+        android:backgroundTint="#D0D0D0"
+        android:drawableLeft="@drawable/mail_for_login"
+        android:drawablePadding="25dp"
+        android:elegantTextHeight="false"
+        android:ems="10"
+        android:freezesText="false"
+        android:hint="@string/plainLogin"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="30dp"
+        android:textAllCaps="false"
+        android:textColor="#197BDD"
+        android:textColorHint="#D0D0D0"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/plainPass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="256dp"
+        android:layout_height="105dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="140dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintBottom_toTopOf="@+id/plainLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textForLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="28dp"
+        android:text="@string/textForLogin"
+        android:textColor="#959595"
+        app:layout_constraintBottom_toTopOf="@+id/plainLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textGreetings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="28dp"
+        android:text="@string/textGreetings"
+        android:textColor="#282828"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textForLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btAuthG"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="114dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/circle_for_soc"
+        android:text="@string/btAuthG"
+        android:textColor="#0258D9"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNoAcc" />
+
+    <Button
+        android:id="@+id/btAuthVK"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="113dp"
+        android:background="@drawable/circle_for_soc"
+        android:text="@string/btAuthVK"
+        android:textColor="#0258D9"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btAuthG"
+        app:layout_constraintTop_toBottomOf="@+id/textNoAcc" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/textForgotPass"
+        app:layout_constraintBottom_toTopOf="@+id/btEnter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plainPass" />
+
+    <TextView
+        android:id="@+id/textReg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="168dp"
+        android:text="@string/textReg"
+        android:textColor="#0043BE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

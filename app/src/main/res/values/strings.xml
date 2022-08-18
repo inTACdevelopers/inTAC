@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">inTAC</string>
+    <string name="todo">TODO</string>
+    <string name="btEnter">Войти</string>
+    <string name="plainPass">Пароль</string>
+    <string name="plainLogin">Логин</string>
+    <string name="textNoAcc">Нет аккаунта?</string>
+    <string name="textForLogin">Введите свой логин и пароль, чтобы продолжить</string>
+    <string name="btAuthG">G+</string>
+    <string name="btAuthVK">VK</string>
+    <string name="textGreetings">Здравствуйте!</string>
+    <string name="textReg">Зарегистрируйтесь</string>
+    <string name="textForgotPass">Забыли пароль?</string>
+</resources>
