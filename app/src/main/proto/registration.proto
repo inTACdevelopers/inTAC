@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package registration;
+
+option java_package = "com.example.registration";
+option java_outer_classname = "RegistrarProto";
+
+service registrar{
+  rpc SingIn(SingInRequest) returns (SingInResponse);
+}
+
+message SingInRequest{
+  string login = 1 ;
+  string password = 2;
+  string surname = 3;
+  string name = 4 ;
+  string  company = 5;
+}
+message SingInResponse{
+  int32 code = 1;
+  string state = 2;
+}
