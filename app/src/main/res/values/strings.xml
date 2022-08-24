@@ -9,6 +9,23 @@
     <string name="btAuthG">G+</string>
     <string name="btAuthVK">VK</string>
     <string name="textGreetings">Здравствуйте!</string>
-    <string name="textReg">Зарегистрируйтесь</string>
+    <string name="textGoReg">Зарегистрируйтесь</string>
     <string name="textForgotPass">Забыли пароль?</string>
+    <string name="textRegistration">Регистрация</string>
+    <string name="textHelpRegistration">Заполните все поля, чтобы создать аккаунт</string>
+    <string name="textAlreadyHaveAcc">Уже есть аккаунт?</string>
+    <string name="textEnter">Войдите</string>
+    <string name="plainSecondName">Фамилия</string>
+    <string name="plainFirstName">Имя</string>
+    <string name="btForMe">Для себя</string>
+    <string name="btForBusiness">Для бизнеса</string>
+    <string name="plainCompanyName">Название компании</string>
+    <string name="textBirthDate">Дата рождения</string>
+    <string name="plainDay">ДД</string>
+    <string name="plainMonth">ММ</string>
+    <string name="plainYear">ГГ</string>
+    <string name="btContinue">Далее</string>
+    <string name="plainRegLogin">Почта или номер телефона</string>
+    <string name="plainRepeatPass">Повторите пароль</string>
+    <string name="btCreateAcc">Создать</string>
 </resources>
