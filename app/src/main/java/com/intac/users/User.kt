@@ -1,8 +1,8 @@
 package com.intac.users
 
 
-import authorization.Authorization
-import authorization.authorizerGrpc
+import com.example.authorization.authorizerGrpc
+import com.example.authorization.AuthorizerProto
 import com.example.registration.RegistrarProto
 import com.example.registration.registrarGrpc
 import  com.intac.conf
@@ -95,8 +95,8 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
 //
 // Все остальные параметры характеризуют сущность пользователя
 
-fun SingUp(login: String, pass: String): Authorization.SingUpResponse {
-    var response: Authorization.SingUpResponse = Authorization.SingUpResponse.getDefaultInstance()
+fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
+    var response: AuthorizerProto.SingUpResponse = AuthorizerProto.SingUpResponse.getDefaultInstance()
 
     val singUpThread: Thread = Thread(Runnable {
         var host: String = conf.HOST
@@ -114,7 +114,7 @@ fun SingUp(login: String, pass: String): Authorization.SingUpResponse {
 
 
         val request =
-            Authorization.SingUpRequest.newBuilder().setLogin(login).setPassword(pass).build()
+           AuthorizerProto.SingUpRequest.newBuilder().setLogin(login).setPassword(pass).build()
 
         response = client.singUp(request)
 
