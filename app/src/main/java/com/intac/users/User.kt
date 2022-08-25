@@ -20,6 +20,10 @@ class User(
 ) {
     // Здесь дальше появяться  различные методы работы с классом пользователя
 }
+
+
+fun SingIn(user: User): RegistrarProto.SingInResponse {
+
 // Принимает объект User с заполнеными полями (кроме id)
 // Возращает объект singInResponse с параметрами
 //  int code = 1
@@ -32,10 +36,6 @@ class User(
 // 1 - Ошибка существования пользователя с таким логином (state = User already exist)
 // 2 - Ошибка существования комании с таким названием (state = Company already exist)
 // 3 - Ошибка при работе с базой данных (state = Server Error (#db))
-
-fun SingIn(user: User): RegistrarProto.SingInResponse {
-
-
     var host: String = conf.HOST
     var port: Int = conf.PORT
 
@@ -55,12 +55,13 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
 
 
         val request =
-            RegistrarProto.SingInRequest.newBuilder().setLogin(user.login).setPassword(user.pass)
+            RegistrarProto.SingInRequest.newBuilder().setLogin(user.login)
+                .setPassword(user.pass.hashCode().toString())
                 .setName(user.name).setCompany(user.company).setSurname(user.surname).build()
 
 
         client.singIn(request).also { response = it }
-
+        channel.shutdownNow()
 
     })
 
@@ -70,7 +71,9 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
 
 }
 
-// Возращает объект SingUpResponse с параметрами
+
+fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
+    // Возращает объект SingUpResponse с параметрами
 //  int code = 1
 //  string state = 2;
 //  int32 user_type = 3;
@@ -94,9 +97,8 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
 // 1 - продавец (при регистрации было указано поле company)
 //
 // Все остальные параметры характеризуют сущность пользователя
-
-fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
-    var response: AuthorizerProto.SingUpResponse = AuthorizerProto.SingUpResponse.getDefaultInstance()
+    var response: AuthorizerProto.SingUpResponse =
+        AuthorizerProto.SingUpResponse.getDefaultInstance()
 
     val singUpThread: Thread = Thread(Runnable {
         var host: String = conf.HOST
@@ -107,6 +109,7 @@ fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
             port = conf.DEBAG_PORT
 
         }
+
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
@@ -114,11 +117,12 @@ fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
 
 
         val request =
-           AuthorizerProto.SingUpRequest.newBuilder().setLogin(login).setPassword(pass).build()
+            AuthorizerProto.SingUpRequest.newBuilder().setLogin(login)
+                .setPassword(pass.hashCode().toString()).build()
 
         response = client.singUp(request)
 
-
+        channel.shutdownNow()
     })
 
     singUpThread.start()

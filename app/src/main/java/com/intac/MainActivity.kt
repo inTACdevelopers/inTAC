@@ -16,6 +16,16 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-
+//        val user: User = User(
+//            name = "alex",
+//            surname = "mitroshkin",
+//            login = "89020930888",
+//            pass = "pass",
+//            company = "INTAC"
+//        )
+//
+//        val r = SingUp("89020930888","passs")
+//        Log.d("Test", r.state)
+//        Log.d("Test", "123")
     }
 }
