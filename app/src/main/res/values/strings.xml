@@ -28,4 +28,9 @@
     <string name="plainRegLogin">Почта или номер телефона</string>
     <string name="plainRepeatPass">Повторите пароль</string>
     <string name="btCreateAcc">Создать</string>
+    <string name="btUploadPicture">Загрузить фото товара</string>
+    <string name="btPost">Опубликовать</string>
+    <string name="plainPostName">Название товара</string>
+    <string name="plainPostDescription">Описание товара</string>
+    <string name="plainContacts">Контакты продавца</string>
 </resources>
