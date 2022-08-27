@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btEnter.setOnClickListener(){
-            appSignIn()
+            appSignUp()
         }
 
         binding.textReg.setOnClickListener(){
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("RegTest", d.state)
     }
 
-    private fun appSignIn(){ // Вход в аккаунт
+    private fun appSignUp(){ // Вход в аккаунт
         var sign = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
 
         Log.d("LoginTest", binding.plainLogin.text.toString())

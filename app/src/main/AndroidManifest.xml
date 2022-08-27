@@ -17,6 +17,9 @@
         android:theme="@style/Theme.InTAC"
         tools:targetApi="31">
         <activity
+            android:name=".Feed"
+            android:exported="false" />
+        <activity
             android:name=".CreatePost"
             android:exported="false" />
         <activity

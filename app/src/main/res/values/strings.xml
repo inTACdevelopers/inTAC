@@ -33,4 +33,8 @@
     <string name="plainPostName">Название товара</string>
     <string name="plainPostDescription">Описание товара</string>
     <string name="plainContacts">Контакты продавца</string>
+    <string name="btAddPost">+</string>
+    <string name="textPostName">Название</string>
+    <string name="textPostDescription">Описание</string>
+    <string name="textContacts">Контакты продавца</string>
 </resources>
