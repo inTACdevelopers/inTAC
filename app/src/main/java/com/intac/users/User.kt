@@ -16,7 +16,8 @@ class User(
     val pass: String,
     val name: String,
     val surname: String,
-    val company: String = ""
+    val company: String = "",
+    val birth: String
 ) {
     // Здесь дальше появяться  различные методы работы с классом пользователя
 }
@@ -57,7 +58,8 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
         val request =
             RegistrarProto.SingInRequest.newBuilder().setLogin(user.login)
                 .setPassword(user.pass.hashCode().toString())
-                .setName(user.name).setCompany(user.company).setSurname(user.surname).build()
+                .setName(user.name).setCompany(user.company).setSurname(user.surname)
+                .setBirthDate(user.birth).build()
 
 
         client.singIn(request).also { response = it }

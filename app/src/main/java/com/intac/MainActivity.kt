@@ -15,27 +15,28 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btEnter.setOnClickListener(){
+        binding.btEnter.setOnClickListener() {
             appSignUp()
         }
 
-        binding.textReg.setOnClickListener(){
+        binding.textReg.setOnClickListener() {
             // перейти на слайд регистрации
         }
 
         val user: User = User(
             name = "Ivan",
             surname = "Tokarev",
-            login = "123",
+            login = "1234",
             pass = "123",
-            company = "Dildo.corp"
+            company = "not Dildo.corp",
+            birth = "10.2.2"
         )
 
         val d = SingIn(user)
         Log.d("RegTest", d.state)
     }
 
-    private fun appSignUp(){ // Вход в аккаунт
+    private fun appSignUp() { // Вход в аккаунт
         var sign = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
 
         Log.d("LoginTest", binding.plainLogin.text.toString())
