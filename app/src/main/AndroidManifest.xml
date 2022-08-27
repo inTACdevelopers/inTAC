@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.intac">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,7 +17,13 @@
         android:theme="@style/Theme.InTAC"
         tools:targetApi="31">
         <activity
-            android:name=".registration_page2"
+            android:name=".Feed"
+            android:exported="false" />
+        <activity
+            android:name=".CreatePost"
+            android:exported="false" />
+        <activity
+            android:name=".Registration_page2"
             android:exported="false" />
         <activity
             android:name=".Registration"

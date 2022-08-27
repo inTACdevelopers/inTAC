@@ -14,7 +14,7 @@ message SingInRequest{
   string password = 2;
   string surname = 3;
   string name = 4 ;
-  string  company = 5;
+  string company = 5;
 }
 message SingInResponse{
   int32 code = 1;
