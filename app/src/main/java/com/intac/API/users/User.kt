@@ -1,4 +1,4 @@
-package com.intac.users
+package com.intac.API.users
 
 
 import com.example.authorization.authorizerGrpc
@@ -11,13 +11,13 @@ import io.grpc.okhttp.OkHttpChannelBuilder
 // Класс описываюсщий сущность пользователя
 // Company - не обязательный параметр
 class User(
-    val id: Int = 0,
-    val login: String,
-    val pass: String,
-    val name: String,
-    val surname: String,
-    val company: String = "",
-    val birth: String
+    var id: Int = 0,
+    var login: String,
+    var pass: String,
+    var name: String,
+    var surname: String,
+    var company: String = "",
+    var birth: String
 ) {
     // Здесь дальше появяться  различные методы работы с классом пользователя
 }

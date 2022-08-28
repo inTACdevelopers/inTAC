@@ -116,6 +116,7 @@
         android:layout_marginStart="38dp"
         android:layout_marginTop="37dp"
         android:background="@drawable/rectangle_for_upload_picture"
+        android:onClick="choosePhoto"
         android:text="@string/btUploadPicture"
         android:textAllCaps="false"
         android:textColor="#0043BE"

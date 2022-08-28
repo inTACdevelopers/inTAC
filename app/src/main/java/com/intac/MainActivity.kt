@@ -3,9 +3,11 @@ package com.intac
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.intac.API.users.*
+
 import com.intac.databinding.ActivityMainBinding
-import com.intac.users.*
-import kotlin.math.log
+
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -37,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun appSignUp() { // Вход в аккаунт
-        var sign = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
+        val sign = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
 
         Log.d("LoginTest", binding.plainLogin.text.toString())
         Log.d("LoginTest", binding.plainPass.text.toString())
