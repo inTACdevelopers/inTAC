@@ -1,5 +1,6 @@
 package com.intac
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,15 +23,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.textReg.setOnClickListener() {
-            // перейти на слайд регистрации
+            Log.d("TestSenderToReg", "Sent to reg")
+
+            val intent = Intent(this@MainActivity, Registration::class.java)
+            startActivity(intent)
         }
 
         val user: User = User(
             name = "Ivan",
             surname = "Tokarev",
-            login = "1234",
+            login = "12345",
             pass = "123",
-            company = "not Dildo.corp",
+            company = "smth",
             birth = "10.2.2"
         )
 
@@ -41,12 +45,11 @@ class MainActivity : AppCompatActivity() {
     private fun appSignUp() { // Вход в аккаунт
         val sign = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
 
-        Log.d("LoginTest", binding.plainLogin.text.toString())
-        Log.d("LoginTest", binding.plainPass.text.toString())
-
         if (sign.state == "OK") {
-            //тут надо перевести на экран ленты, но пока тест
             Log.d("LoginTest", "Success")
+
+            val intent = Intent(this@MainActivity, Feed::class.java)
+            startActivity(intent)
         } else {
             Log.d("LoginTest", sign.state)
         }
