@@ -16,11 +16,11 @@ import java.io.FileDescriptor
 class Post(
     var id: Int = 0,
     var title: String,
-    var descriptor: String,
+    var description: String,
     var sellerContact: String,
     var photoBitmap: Bitmap,
-    var from_user: User,
-    var creation_time: String
+    var from_user: Int,
+    var creation_time: String = ""
 ) {
 // Здесь
 }
@@ -60,8 +60,8 @@ fun makePost(post: Post): PostMakerProto.makePostResponse {
         val request = PostMakerProto.makePostRequest.newBuilder()
             .setPhotoBytes(ByteString.copyFrom(getByteArrFromPhoto(post.photoBitmap)))
             .setFileName("TEST")
-            .setPostTitle(post.title).setPostDescription(post.descriptor)
-            .setSellerContact(post.sellerContact).setUserId(post.from_user.id.toLong())
+            .setPostTitle(post.title).setPostDescription(post.description)
+            .setSellerContact(post.sellerContact).setUserId(post.from_user.toLong()) // тут было еще .id.
             .build()
 
         response = client.makePost(request)

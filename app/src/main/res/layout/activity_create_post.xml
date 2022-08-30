@@ -15,6 +15,7 @@
         android:layout_marginTop="52dp"
         android:background="@drawable/enter_btn"
         android:backgroundTint=" #0043BE"
+        android:onClick="UploadPost"
         android:text="@string/btPost"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"

@@ -7,24 +7,26 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.ToggleButton
+import com.intac.databinding.ActivityFeedBinding
+import com.intac.databinding.ActivityMainBinding
+import com.intac.databinding.ActivityRegistrationBinding
 
 class Registration : AppCompatActivity() {
+    lateinit var binding: ActivityRegistrationBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration)
+        binding = ActivityRegistrationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val btForMe: ToggleButton = findViewById(R.id.btForMe)
-        val btForBusiness: ToggleButton = findViewById(R.id.btForBusiness)
-        val plainCompanyName: EditText = findViewById(R.id.plainCompanyName)
-
-        btForMe.setOnCheckedChangeListener { _, isChecked ->
-            btForBusiness.setChecked(false)
-            plainCompanyName.setVisibility(View.GONE)
+        binding.btForMe.setOnCheckedChangeListener { _, isChecked ->
+            binding.btForBusiness.setChecked(false)
+            binding.plainCompanyName.setVisibility(View.GONE)
         }
 
-        btForBusiness.setOnCheckedChangeListener { _, isChecked ->
-            btForMe.setChecked(false)
-            plainCompanyName.setVisibility(View.VISIBLE)
+        binding.btForBusiness.setOnCheckedChangeListener { _, isChecked ->
+            binding.btForMe.setChecked(false)
+            binding.plainCompanyName.setVisibility(View.VISIBLE)
         }
     }
 }

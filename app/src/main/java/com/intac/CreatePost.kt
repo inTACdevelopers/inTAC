@@ -5,9 +5,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.intac.API.posts.*
 import com.intac.databinding.ActivityCreatePostBinding
+import java.lang.Exception
 
 
 @Suppress("DEPRECATION")
@@ -19,17 +22,21 @@ class CreatePost : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePostBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btBackCreatePost.setOnClickListener() {
+            appBack()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 100 && data != null && data.data != null) {
+        if (requestCode == 10 && data != null && data.data != null) {
             if (resultCode == RESULT_OK) {
                 choosedPhotoBitmap =
                     MediaStore.Images.Media.getBitmap(this.contentResolver, data.data)
             } else {
-                // Ваня, обработай тут ошибку, если фото по какой-то причине не выбрано, или это не фото
+                Log.d("TestPhoto", resultCode.toString()) // временно
             }
 
         }
@@ -45,14 +52,44 @@ class CreatePost : AppCompatActivity() {
 
     fun UploadPost(view: View) {
         try {
-            val check: Int = choosedPhotoBitmap.width
+            val PostName = binding.plainPostName.text.toString()
+            val PostDescription = binding.plainPostDescription.text.toString()
+            val PostContacts = binding.plainContacts.text.toString()
+            val id = intent.extras?.getInt("id") as Int
 
-            // Здесь создаешь объект класса Post и передаёшь его в makePost(Post)
-            // *тебе нужено вытащить id пользователя (который сейчас авторизирован)
+            if (PostName != "" && PostDescription != "" && PostContacts != "") {
+                val check: Int = choosedPhotoBitmap.width
 
+                val post: Post = Post(
+                    title = PostName,
+                    description = PostDescription,
+                    sellerContact = PostContacts,
+                    photoBitmap = choosedPhotoBitmap,
+                    from_user = id
+                )
 
+                val makePostResponse = makePost(post)
+
+                if (makePostResponse.state == "OK") {
+                    val intent = Intent(this@CreatePost, Feed::class.java)
+                    intent.putExtra("id", id)
+                    startActivity(intent)
+                } else {
+                    Log.d("TestUploadPost_2", makePostResponse.state) // временно
+                }
+            } else {
+                Log.d("TestUploadPost", "Smth not named") // временно
+            }
         } catch (w: Exception) {
-           // Фотка не выбрана
+            Log.d("TestUploadPost", "Photo not chosen")
         }
+    }
+
+    private fun appBack() {
+        val id = intent.extras?.getInt("id")
+
+        val intent = Intent(this@CreatePost, Feed::class.java)
+        intent.putExtra("id", id)
+        startActivity(intent)
     }
 }

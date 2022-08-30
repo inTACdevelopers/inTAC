@@ -23,23 +23,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.textReg.setOnClickListener() {
-            Log.d("TestSenderToReg", "Sent to reg")
-
-            val intent = Intent(this@MainActivity, Registration::class.java)
-            startActivity(intent)
+            goToReg()
         }
 
         val user: User = User(
             name = "Ivan",
             surname = "Tokarev",
-            login = "12345",
+            login = "1234567",
             pass = "123",
-            company = "smth",
+            company = "la",
             birth = "10.2.2"
         )
 
-        val d = SingIn(user)
-        Log.d("RegTest", d.state)
+        //val d = SingIn(user)
+        //Log.d("RegTest", d.state)
     }
 
     private fun appSignUp() { // Вход в аккаунт
@@ -49,9 +46,17 @@ class MainActivity : AppCompatActivity() {
             Log.d("LoginTest", "Success")
 
             val intent = Intent(this@MainActivity, Feed::class.java)
+            intent.putExtra("id", sign.id)
             startActivity(intent)
         } else {
-            Log.d("LoginTest", sign.state)
+            Log.d("LoginTest", sign.state) // временно
         }
+    }
+
+    private fun goToReg() {
+        Log.d("TestSenderToReg", "Sent to reg")
+
+        val intent = Intent(this@MainActivity, Registration::class.java)
+        startActivity(intent)
     }
 }
