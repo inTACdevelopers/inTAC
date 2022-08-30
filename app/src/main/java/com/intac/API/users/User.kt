@@ -3,9 +3,9 @@ package com.intac.API.users
 
 import com.example.authorization.authorizerGrpc
 import com.example.authorization.AuthorizerProto
+import com.intac.conf
 import com.example.registration.RegistrarProto
 import com.example.registration.registrarGrpc
-import  com.intac.conf
 import io.grpc.okhttp.OkHttpChannelBuilder
 
 // Класс описываюсщий сущность пользователя
