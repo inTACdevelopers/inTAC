@@ -40,16 +40,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun appSignUp() { // Вход в аккаунт
-        val sign = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
+        val SignUpResponse = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
 
-        if (sign.state == "OK") {
+        if (SignUpResponse.state == "OK") {
             Log.d("LoginTest", "Success")
 
             val intent = Intent(this@MainActivity, Feed::class.java)
-            intent.putExtra("id", sign.id)
+            intent.putExtra("id", SignUpResponse.id)
             startActivity(intent)
         } else {
-            Log.d("LoginTest", sign.state) // временно
+            Log.d("LoginTest", SignUpResponse.state) // в будущем будет соответствующая ошибка на экране
         }
     }
 

@@ -4,11 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.intac.databinding.ActivityMainBinding
-import com.intac.databinding.ActivityRegistrationBinding
 import com.intac.databinding.ActivityRegistrationPage2Binding
-import com.intac.API.users.SingIn
-import com.intac.API.users.User
+import com.intac.API.users.*
 
 class Registration_page2 : AppCompatActivity() {
     lateinit var binding: ActivityRegistrationPage2Binding
@@ -19,44 +16,49 @@ class Registration_page2 : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btBackPage2.setOnClickListener(){
-            back()
+            appBack()
         }
 
         binding.btCreateAcc.setOnClickListener(){
-            appSignUp()
-            forward()
+            appSignIn()
         }
     }
 
-    private fun back() {
+    private fun appBack() {
+        // в MVP введенные данные на прошлой странице будут сохраняться, если вернуться назад с этой
+
         val intent = Intent(this@Registration_page2, Registration::class.java)
         startActivity(intent)
     }
 
-    private fun forward() {
-        val intent = Intent(this@Registration_page2, Feed::class.java)
-        startActivity(intent)
-    }
+    private fun appSignIn() {
+        if (binding.plainRegPass.text.toString() == binding.plainRepeatPass.text.toString()) {
+            val user: User = User(
+                name = intent.getStringExtra("name") as String,
+                surname = intent.getStringExtra("surname") as String,
+                login = binding.plainRegLogin.text.toString(),
+                pass = binding.plainRegPass.text.toString(),
+                company = intent.getStringExtra("company") as String,
+                birth = intent.getStringExtra("day") as String +
+                        intent.getStringExtra("month") as String +
+                        intent.getStringExtra("year") as String
+            )
 
-    private fun appSignUp() {
-        val user: User = User(
-            name = intent.getStringExtra("name") as String,
-            surname = intent.getStringExtra("surname") as String,
-            login = binding.plainRegLogin.text.toString(),
-            pass = binding.plainRegPass.text.toString(),
-            company = intent.getStringExtra("company") as String,
-            birth = intent.getStringExtra("day") as String +
-                    intent.getStringExtra("month") as String +
-                    intent.getStringExtra("year") as String
-        )
-        val response = SingIn(user)
-        // проверить правильность ввода пароля
-        if (response.state == "OK") {
-            Log.d("RegTest", "Success")
+            val SignInResponse = SingIn(user)
 
-            forward()
+            if (SignInResponse.state == "OK") {
+                Log.d("TestReg", "Success")
+
+                val SignUpResponse = SingUp(user.login, user.pass)
+
+                val intent = Intent(this@Registration_page2, Feed::class.java)
+                intent.putExtra("id", SignUpResponse.id)
+                startActivity(intent)
+            } else {
+                Log.d("TestReg", SignInResponse.state) // в будущем будет соответствующая ошибка на экране
+            }
         } else {
-            Log.d("RegTest", response.state)
+            Log.d("TestReg", "The passwords are not the same") // в будущем будет соответствующая ошибка на экране
         }
     }
 }

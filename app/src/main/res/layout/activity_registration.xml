@@ -170,35 +170,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/plainCompanyName" />
 
-    <TextView
-        android:id="@+id/textHaveAcc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="52dp"
-        android:text="@string/textAlreadyHaveAcc"
-        android:textColor="#959595"
-        android:textSize="14sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textEnter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btContinue"
-        tools:ignore="TextContrastCheck,TextContrastCheck" />
-
-    <TextView
-        android:id="@+id/textEnter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="25dp"
-        android:text="@string/textEnter"
-        android:textColor="#0043BE"
-        app:layout_constraintStart_toEndOf="@+id/textHaveAcc"
-        app:layout_constraintTop_toBottomOf="@+id/btContinue" />
-
     <ImageButton
         android:id="@+id/btBack"
         android:layout_width="54dp"

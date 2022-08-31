@@ -22,40 +22,28 @@ class Registration : AppCompatActivity() {
         binding.btForMe.setOnCheckedChangeListener { _, isChecked ->
             binding.btForBusiness.setChecked(false)
             binding.plainCompanyName.setVisibility(View.GONE)
-            data_transfer()
         }
 
         binding.btForBusiness.setOnCheckedChangeListener { _, isChecked ->
             binding.btForMe.setChecked(false)
             binding.plainCompanyName.setVisibility(View.VISIBLE)
-            data_transfer_2()
         }
 
         binding.btContinue.setOnClickListener(){
-            forward()
-        }
-
-        binding.textEnter.setOnClickListener(){
-            back()
+            appContinueReg()
         }
 
         binding.btBack.setOnClickListener(){
-            back()
+            appBack()
         }
     }
 
-    private fun back() {
+    private fun appBack() {
         val intent = Intent(this@Registration, MainActivity::class.java)
         startActivity(intent)
     }
 
-    private fun forward() {
-        val intent = Intent(this@Registration, Registration_page2::class.java)
-        startActivity(intent)
-    }
-
-
-    private  fun data_transfer() {
+    private fun appContinueReg() {
         val intent = Intent(this@Registration, Registration_page2::class.java)
 
         intent.putExtra("company", binding.plainCompanyName.text.toString())
@@ -68,7 +56,5 @@ class Registration : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private  fun data_transfer_2() {
-
-    }
+    // тут надо написать обработчик нажатия для btForMe и btForBusiness
 }
