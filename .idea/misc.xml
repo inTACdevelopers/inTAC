@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/drawable/choose_side_btn.xml" value="0.269" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/drawable/test.xml" value="0.269" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/activity_create_post.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/activity_feed.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/activity_registration.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/feed.xml" value="0.25" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/post.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/alexe/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_registration.xml" value="0.23794871794871794" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/choose_side.xml" value="0.1" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/choose_side_btn.xml" value="0.1" />

@@ -1,6 +1,7 @@
 package com.intac.API.users
 
 
+import android.util.Log
 import com.example.authorization.authorizerGrpc
 import com.example.authorization.AuthorizerProto
 import com.example.registration.RegistrarProto
@@ -52,6 +53,8 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
+        Log.d("RegTest", "$host:$port")
+
         val client = registrarGrpc.newBlockingStub(channel)
 
 
@@ -62,7 +65,7 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
                 .setBirthDate(user.birth).build()
 
 
-        client.singIn(request).also { response = it }
+        response = client.singIn(request)
         channel.shutdownNow()
 
     })

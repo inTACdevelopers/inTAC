@@ -1,7 +1,10 @@
 package com.intac.API.posts
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import com.example.makeposts.PostMakerProto
 import com.example.makeposts.postGetterGrpc
 import com.example.makeposts.postMakerGrpc
@@ -10,8 +13,11 @@ import com.intac.API.users.User
 import com.intac.CreatePost
 import com.intac.conf
 import io.grpc.okhttp.OkHttpChannelBuilder
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.FileDescriptor
+import java.io.InputStream
+import kotlin.concurrent.thread
 
 class Post(
     var id: Int = 0,
@@ -19,10 +25,10 @@ class Post(
     var descriptor: String,
     var sellerContact: String,
     var photoBitmap: Bitmap,
-    var from_user: User,
+    var from_user: Long,
     var creation_time: String
 ) {
-// Здесь
+// Здесь вдальнейшем появятся функции по работе с объектом поста
 }
 
 fun makePost(post: Post): PostMakerProto.makePostResponse {
@@ -36,7 +42,6 @@ fun makePost(post: Post): PostMakerProto.makePostResponse {
     // 1 - Ошибка в файловой системе сервера, пользователю надо сказать попробовать ещё раз (state = File Exists error (#db))
     // 2 - Серверная ошибка при работе с базой (state = Server Error (#db))
     //
-
 
 
     var response: PostMakerProto.makePostResponse =
@@ -61,7 +66,7 @@ fun makePost(post: Post): PostMakerProto.makePostResponse {
             .setPhotoBytes(ByteString.copyFrom(getByteArrFromPhoto(post.photoBitmap)))
             .setFileName("TEST")
             .setPostTitle(post.title).setPostDescription(post.descriptor)
-            .setSellerContact(post.sellerContact).setUserId(post.from_user.id.toLong())
+            .setSellerContact(post.sellerContact).setUserId(post.from_user.toLong())
             .build()
 
         response = client.makePost(request)
@@ -124,7 +129,95 @@ fun getPost(post_id: Long): PostMakerProto.GetPostResponse {
 fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
 
     val stream = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, stream)
 
     return stream.toByteArray()
+}
+
+fun getPostPaginated(post_id: Long, callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit) {
+    var response: PostMakerProto.GetPostPaginatedResponse =
+        PostMakerProto.GetPostPaginatedResponse.getDefaultInstance()
+    thread {
+        var host: String = conf.HOST
+        var port: Int = conf.PORT
+
+        if (conf.DEBAG) {
+            host = conf.DEBAG_HOST
+            port = conf.DEBAG_PORT
+
+        }
+
+        val channel =
+            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+        val client = postGetterGrpc.newBlockingStub(channel)
+
+        val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).build()
+        response = client.getPostPaginated(request)
+        channel.shutdownNow()
+
+        Handler(Looper.getMainLooper()).post {
+
+            callback.invoke(response)
+
+        }
+
+    }
+
+}
+
+fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
+    var response: PostMakerProto.GetFirstPostIdResponse
+
+
+    thread {
+        var host: String = conf.HOST
+        var port: Int = conf.PORT
+
+        if (conf.DEBAG) {
+            host = conf.DEBAG_HOST
+            port = conf.DEBAG_PORT
+
+        }
+        val channel =
+            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+        val client = postGetterGrpc.newBlockingStub(channel)
+
+        val request = PostMakerProto.GetFirstPostIdRequest.newBuilder().build()
+        response = client.getFirstPostId(request)
+        channel.shutdownNow()
+
+
+        Handler(Looper.getMainLooper()).post {
+
+            callback.invoke(response)
+
+        }
+
+    }
+
+
+}
+
+
+fun PhotoDecoder(bytes: ByteString?): Bitmap {
+    val stream: InputStream = ByteArrayInputStream(bytes!!.toByteArray())
+    return BitmapFactory.decodeStream(stream)
+
+}
+
+fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResponse): ArrayList<Post> {
+    val out_list = ArrayList<Post>()
+
+    for (item in response.postsList) {
+        out_list.add(
+            Post(
+                item.postId, item.postTitle, item.postDescription, item.sellerContact,
+                PhotoDecoder(item.photoBytes), item.userId.toLong(), item.creationTime
+            )
+        )
+    }
+    return out_list
+
 }
