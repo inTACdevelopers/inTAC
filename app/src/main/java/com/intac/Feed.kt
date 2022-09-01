@@ -1,7 +1,9 @@
 package com.intac
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.API.posts.GetFirstPostId
@@ -64,6 +66,16 @@ class Feed : AppCompatActivity() {
             }
         })
     }
+
+    private fun goToCreatePost() {
+        Log.d("TestSenderToPostCreate", "Sent to Post Creation")
+        val id = intent.extras?.getInt("id")
+
+        val intent = Intent(this@Feed, CreatePost::class.java)
+        intent.putExtra("id", id)
+        startActivity(intent)
+    }
+
     private fun init() {
         recyclerView = binding.rvPost
         adapter = PostAdapter()
