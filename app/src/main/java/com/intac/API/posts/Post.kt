@@ -22,11 +22,11 @@ import kotlin.concurrent.thread
 class Post(
     var id: Int = 0,
     var title: String,
-    var descriptor: String,
+    var description: String,
     var sellerContact: String,
     var photoBitmap: Bitmap,
     var from_user: Long,
-    var creation_time: String
+    var creation_time: String = ""
 ) {
 // Здесь вдальнейшем появятся функции по работе с объектом поста
 }
@@ -65,7 +65,7 @@ fun makePost(post: Post): PostMakerProto.makePostResponse {
         val request = PostMakerProto.makePostRequest.newBuilder()
             .setPhotoBytes(ByteString.copyFrom(getByteArrFromPhoto(post.photoBitmap)))
             .setFileName("TEST")
-            .setPostTitle(post.title).setPostDescription(post.descriptor)
+            .setPostTitle(post.title).setPostDescription(post.description)
             .setSellerContact(post.sellerContact).setUserId(post.from_user.toLong())
             .build()
 

@@ -55,7 +55,7 @@ class CreatePost : AppCompatActivity() {
             val PostName = binding.plainPostName.text.toString()
             val PostDescription = binding.plainPostDescription.text.toString()
             val PostContacts = binding.plainContacts.text.toString()
-            val id = intent.extras?.getInt("id") as Int
+            val id = intent.extras?.getLong("id") as Long
 
             if (PostName != "" && PostDescription != "" && PostContacts != "") {
                 val check: Int = choosedPhotoBitmap.width

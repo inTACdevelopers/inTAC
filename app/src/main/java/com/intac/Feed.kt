@@ -27,10 +27,13 @@ class Feed : AppCompatActivity() {
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btAddPost.setOnClickListener() {
+            goToCreatePost()
+        }
 
         init()
 
-        GetFirstPostId{ it ->
+        GetFirstPostId{ it
             getPostPaginated(it.firstPostId.toLong()){
                 adapter.concatLists(makeListFromPaginationResponse(it))
             }
@@ -69,7 +72,7 @@ class Feed : AppCompatActivity() {
 
     private fun goToCreatePost() {
         Log.d("TestSenderToPostCreate", "Sent to Post Creation")
-        val id = intent.extras?.getInt("id")
+        val id = intent.extras?.getLong("id")
 
         val intent = Intent(this@Feed, CreatePost::class.java)
         intent.putExtra("id", id)

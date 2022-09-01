@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("LoginTest", "Success")
 
             val intent = Intent(this@MainActivity, Feed::class.java)
-            intent.putExtra("id", SignUpResponse.id)
+            intent.putExtra("id", SignUpResponse.id.toLong())
             startActivity(intent)
         } else {
             Log.d("LoginTest", SignUpResponse.state) // в будущем будет соответствующая ошибка на экране
