@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.intac.API.posts.GetFirstPostId
-import com.intac.API.posts.PostAdapter
-import com.intac.API.posts.getPostPaginated
-import com.intac.API.posts.makeListFromPaginationResponse
+import com.intac.API.posts.*
 
 import com.intac.databinding.FeedBinding
 
@@ -22,20 +19,24 @@ class Feed : AppCompatActivity() {
     var curr_post_id: Long = 0
     var start_post_id = curr_post_id
 
+    var PostsThread: Thread = Thread()
+    var tmpList: ArrayList<Post> = ArrayList<Post>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btAddPost.setOnClickListener() {
-            goToCreatePost()
-        }
 
         init()
 
-        GetFirstPostId{ it
-            getPostPaginated(it.firstPostId.toLong()){
+        GetFirstPostId { it ->
+            start_post_id = it.firstPostId.toLong()
+            curr_post_id = it.firstPostId.toLong()
+
+            getPostPaginated(it.firstPostId.toLong()) {
                 adapter.concatLists(makeListFromPaginationResponse(it))
+
             }
         }
     }
@@ -43,28 +44,49 @@ class Feed : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+
                 super.onScrollStateChanged(recyclerView, newState)
+
                 val visibleItemCount =
                     (recyclerView.layoutManager as LinearLayoutManager).childCount
-                val pastVisibleItem =
+                val totalItemCount = (recyclerView.layoutManager as LinearLayoutManager).itemCount
+                val firstVisibleItems =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                val total = adapter.itemCount
 
 
-                if ((visibleItemCount + pastVisibleItem) >= total -5) {
-                    curr_post_id += 5
 
-                    getPostPaginated(curr_post_id){
-                        adapter.concatLists(makeListFromPaginationResponse(it))
+                if (visibleItemCount + firstVisibleItems >= totalItemCount-1) {
+
+                    val runnable = Runnable {
+
+                        curr_post_id += 5
+
+                        val checklist = adapter.getList()
+                        if (checklist[checklist.size - 1].id == checklist[0].id) {
+                            curr_post_id = start_post_id + 1
+                        }
+
+                        val response = getPostPaginatedSync(curr_post_id)
+
+                        tmpList = makeListFromPaginationResponse((response))
+
+                    }
+                    Log.d("TESTED", PostsThread.isAlive.toString())
+                    if(!PostsThread.isAlive){
+                        PostsThread = Thread(runnable)
+                        PostsThread.start()
+
+                        adapter.concatLists(tmpList)
                     }
 
 
-                    val checkList = adapter.getList()
-                    if (checkList[checkList.size - 1].id.toLong() == checkList[0].id.toLong())
 
-                        curr_post_id = start_post_id
+
+
                 }
+
 
             }
         })
@@ -72,7 +94,7 @@ class Feed : AppCompatActivity() {
 
     private fun goToCreatePost() {
         Log.d("TestSenderToPostCreate", "Sent to Post Creation")
-        val id = intent.extras?.getLong("id")
+        val id = intent.extras?.getInt("id")
 
         val intent = Intent(this@Feed, CreatePost::class.java)
         intent.putExtra("id", id)

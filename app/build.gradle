@@ -68,9 +68,7 @@ dependencies {
 
     def lifecycle_ver = "2.2.0-alpha01"
 
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ver"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+
 
     implementation 'io.grpc:grpc-okhttp:1.48.0' // CURRENT_GRPC_VERSION
     implementation 'io.grpc:grpc-protobuf-lite:1.48.0' // CURRENT_GRPC_VERSION

@@ -165,7 +165,40 @@ fun getPostPaginated(post_id: Long, callback: (PostMakerProto.GetPostPaginatedRe
     }
 
 }
+fun getPostPaginatedSync(
+    post_id: Long,
 
+    ): PostMakerProto.GetPostPaginatedResponse {
+
+    var response: PostMakerProto.GetPostPaginatedResponse =
+        PostMakerProto.GetPostPaginatedResponse.getDefaultInstance()
+
+
+    var host: String = conf.HOST
+    var port: Int = conf.PORT
+
+    if (conf.DEBAG) {
+        host = conf.DEBAG_HOST
+        port = conf.DEBAG_PORT
+
+    }
+
+    val channel =
+        OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+    val client = postGetterGrpc.newBlockingStub(channel)
+
+    val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).build()
+    response = client.getPostPaginated(request)
+    channel.shutdownNow()
+
+
+
+
+    return response
+
+
+}
 fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
     var response: PostMakerProto.GetFirstPostIdResponse
 
