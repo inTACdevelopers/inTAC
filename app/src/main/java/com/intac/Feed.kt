@@ -27,6 +27,9 @@ class Feed : AppCompatActivity() {
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btAddPost.setOnClickListener() {
+            goToCreatePost()
+        }
 
         init()
 
@@ -36,17 +39,15 @@ class Feed : AppCompatActivity() {
 
             getPostPaginated(it.firstPostId.toLong()) {
                 adapter.concatLists(makeListFromPaginationResponse(it))
-
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
+
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-
                 super.onScrollStateChanged(recyclerView, newState)
 
                 val visibleItemCount =
@@ -55,9 +56,7 @@ class Feed : AppCompatActivity() {
                 val firstVisibleItems =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
-
-
-                if (visibleItemCount + firstVisibleItems >= totalItemCount-1) {
+                if (visibleItemCount + firstVisibleItems >= totalItemCount - 1) {
 
                     val runnable = Runnable {
 
@@ -73,21 +72,14 @@ class Feed : AppCompatActivity() {
                         tmpList = makeListFromPaginationResponse((response))
 
                     }
-                    Log.d("TESTED", PostsThread.isAlive.toString())
-                    if(!PostsThread.isAlive){
+
+                    if (!PostsThread.isAlive) {
                         PostsThread = Thread(runnable)
                         PostsThread.start()
 
                         adapter.concatLists(tmpList)
                     }
-
-
-
-
-
                 }
-
-
             }
         })
     }
