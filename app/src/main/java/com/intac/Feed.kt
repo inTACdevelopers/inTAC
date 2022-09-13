@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.API.posts.*
@@ -23,31 +24,40 @@ class Feed : AppCompatActivity() {
     var tmpList: ArrayList<Post> = ArrayList<Post>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.hide()
+
         super.onCreate(savedInstanceState)
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        init()
 
         binding.btAddPost.setOnClickListener() {
             goToCreatePost()
         }
 
-        init()
-
         GetFirstPostId { it ->
-            start_post_id = it.firstPostId.toLong()
-            curr_post_id = it.firstPostId.toLong()
 
-            getPostPaginated(it.firstPostId.toLong()) {
-                adapter.concatLists(makeListFromPaginationResponse(it))
+            if (it.code != 1) {
+                start_post_id = it.firstPostId.toLong()
+                curr_post_id = it.firstPostId.toLong()
+
+                getPostPaginated(it.firstPostId.toLong()) {
+                    adapter.concatLists(makeListFromPaginationResponse(it))
+
+                }
             }
+
         }
     }
 
     override fun onResume() {
         super.onResume()
-
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+
                 super.onScrollStateChanged(recyclerView, newState)
 
                 val visibleItemCount =
@@ -56,37 +66,43 @@ class Feed : AppCompatActivity() {
                 val firstVisibleItems =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
+
+
                 if (visibleItemCount + firstVisibleItems >= totalItemCount - 1) {
+                    if (start_post_id.toInt() != 0) {
+                        val runnable = Runnable {
 
-                    val runnable = Runnable {
+                            curr_post_id += 5
 
-                        curr_post_id += 5
+                            val checklist = adapter.getList()
+                            if (checklist[checklist.size - 1].id == checklist[0].id) {
+                                curr_post_id = start_post_id+1
+                            }
 
-                        val checklist = adapter.getList()
-                        if (checklist[checklist.size - 1].id == checklist[0].id) {
-                            curr_post_id = start_post_id + 1
+                            val response = getPostPaginatedSync(curr_post_id)
+
+                            tmpList = makeListFromPaginationResponse((response))
+
+
                         }
+                        if (!PostsThread.isAlive) {
+                            PostsThread = Thread(runnable)
+                            PostsThread.start()
 
-                        val response = getPostPaginatedSync(curr_post_id)
-
-                        tmpList = makeListFromPaginationResponse((response))
-
+                            adapter.concatLists(tmpList)
+                        }
                     }
 
-                    if (!PostsThread.isAlive) {
-                        PostsThread = Thread(runnable)
-                        PostsThread.start()
-
-                        adapter.concatLists(tmpList)
-                    }
                 }
+
+
             }
         })
     }
 
     private fun goToCreatePost() {
         Log.d("TestSenderToPostCreate", "Sent to Post Creation")
-        val id = intent.extras?.getInt("id")
+        val id = intent.extras?.getLong("id")
 
         val intent = Intent(this@Feed, CreatePost::class.java)
         intent.putExtra("id", id)

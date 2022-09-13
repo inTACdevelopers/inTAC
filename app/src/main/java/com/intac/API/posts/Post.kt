@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.example.makeposts.PostMakerProto
 import com.example.makeposts.postGetterGrpc
 import com.example.makeposts.postMakerGrpc
@@ -225,7 +226,6 @@ fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
         Handler(Looper.getMainLooper()).post {
 
             callback.invoke(response)
-
         }
 
     }
