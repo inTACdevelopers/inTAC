@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.API.posts.*
@@ -23,6 +24,8 @@ class Feed : AppCompatActivity() {
     var tmpList: ArrayList<Post> = ArrayList<Post>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.hide()
+
         super.onCreate(savedInstanceState)
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)

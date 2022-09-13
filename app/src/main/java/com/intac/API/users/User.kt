@@ -114,7 +114,7 @@ fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
             port = conf.DEBAG_PORT
 
         }
-
+        println(host)
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 

@@ -11,6 +11,7 @@ class Registration_page2 : AppCompatActivity() {
     lateinit var binding: ActivityRegistrationPage2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationPage2Binding.inflate(layoutInflater)
         setContentView(binding.root)

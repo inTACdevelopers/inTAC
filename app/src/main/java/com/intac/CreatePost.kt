@@ -15,10 +15,12 @@ import java.lang.Exception
 
 @Suppress("DEPRECATION")
 class CreatePost : AppCompatActivity() {
+
     lateinit var binding: ActivityCreatePostBinding
     lateinit var choosedPhotoBitmap: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePostBinding.inflate(layoutInflater)
         setContentView(binding.root)
