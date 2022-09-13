@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun appSignUp() { // Вход в аккаунт
+
         val SignUpResponse = SingUp(binding.plainLogin.text.toString(), binding.plainPass.text.toString())
 
         if (SignUpResponse.state == "OK") {

@@ -30,14 +30,22 @@ class Feed : AppCompatActivity() {
 
         init()
 
+        binding.btAddPost.setOnClickListener() {
+            goToCreatePost()
+        }
+
         GetFirstPostId { it ->
-            start_post_id = it.firstPostId.toLong()
-            curr_post_id = it.firstPostId.toLong()
 
-            getPostPaginated(it.firstPostId.toLong()) {
-                adapter.concatLists(makeListFromPaginationResponse(it))
+            if (it.code != 1) {
+                start_post_id = it.firstPostId.toLong()
+                curr_post_id = it.firstPostId.toLong()
 
+                getPostPaginated(it.firstPostId.toLong()) {
+                    adapter.concatLists(makeListFromPaginationResponse(it))
+
+                }
             }
+
         }
     }
 
@@ -57,33 +65,30 @@ class Feed : AppCompatActivity() {
 
 
 
-                if (visibleItemCount + firstVisibleItems >= totalItemCount-1) {
+                if (visibleItemCount + firstVisibleItems >= totalItemCount - 1) {
+                    if (start_post_id.toInt() != 0) {
+                        val runnable = Runnable {
 
-                    val runnable = Runnable {
+                            curr_post_id += 5
 
-                        curr_post_id += 5
+                            val checklist = adapter.getList()
+                            if (checklist[checklist.size - 1].id == checklist[0].id) {
+                                curr_post_id = start_post_id+1
+                            }
 
-                        val checklist = adapter.getList()
-                        if (checklist[checklist.size - 1].id == checklist[0].id) {
-                            curr_post_id = start_post_id + 1
+                            val response = getPostPaginatedSync(curr_post_id)
+
+                            tmpList = makeListFromPaginationResponse((response))
+
+
                         }
+                        if (!PostsThread.isAlive) {
+                            PostsThread = Thread(runnable)
+                            PostsThread.start()
 
-                        val response = getPostPaginatedSync(curr_post_id)
-
-                        tmpList = makeListFromPaginationResponse((response))
-
+                            adapter.concatLists(tmpList)
+                        }
                     }
-                    Log.d("TESTED", PostsThread.isAlive.toString())
-                    if(!PostsThread.isAlive){
-                        PostsThread = Thread(runnable)
-                        PostsThread.start()
-
-                        adapter.concatLists(tmpList)
-                    }
-
-
-
-
 
                 }
 
@@ -94,7 +99,7 @@ class Feed : AppCompatActivity() {
 
     private fun goToCreatePost() {
         Log.d("TestSenderToPostCreate", "Sent to Post Creation")
-        val id = intent.extras?.getInt("id")
+        val id = intent.extras?.getLong("id")
 
         val intent = Intent(this@Feed, CreatePost::class.java)
         intent.putExtra("id", id)
