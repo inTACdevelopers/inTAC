@@ -7,6 +7,10 @@
 - [Посевин Данила Павлович](https://github.com/posevin)
 
 ---
+Как запустить проект?
+
+Для работы потребуется файл conf.kt, который можно получить у создателей проекта.
+
 
 Участники:
 - [Митрошкин Алексей](https://github.com/Encapsulateed) -- Chief Financial Officer, Head of Backend development -- Full-stack
