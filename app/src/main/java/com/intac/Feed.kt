@@ -1,16 +1,19 @@
 package com.intac
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.API.posts.*
-
 import com.intac.databinding.FeedBinding
 
+
+@Suppress("DEPRECATION")
 class Feed : AppCompatActivity() {
 
     lateinit var binding: FeedBinding
@@ -23,6 +26,9 @@ class Feed : AppCompatActivity() {
     var PostsThread: Thread = Thread()
     var tmpList: ArrayList<Post> = ArrayList<Post>()
 
+    var mainPaginationLimit: Long = 3
+    var firstPaginationLimit: Long = 3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
 
@@ -30,6 +36,13 @@ class Feed : AppCompatActivity() {
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.rvPost.visibility = View.GONE
+
+
+        with(binding) {
+            val color = Color.parseColor("#0043BE");
+            pbLoader.indeterminateDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+        }
 
         init()
 
@@ -43,10 +56,41 @@ class Feed : AppCompatActivity() {
                 start_post_id = it.firstPostId.toLong()
                 curr_post_id = it.firstPostId.toLong()
 
-                getPostPaginated(it.firstPostId.toLong()) {
+                getPostPaginated(it.firstPostId.toLong(), firstPaginationLimit) {
                     adapter.concatLists(makeListFromPaginationResponse(it))
 
+                    binding.rvPost.visibility = View.VISIBLE
+                    binding.pbLoader.visibility = View.GONE
+
+                    curr_post_id += firstPaginationLimit
+
+
+                    val runnable = Runnable {
+
+                        val paginate:Long = 2
+
+                        val response = getPostPaginatedSync(curr_post_id, paginate)
+
+                        if (response.postsList[0].code == 3) {
+                            curr_post_id = start_post_id + paginate
+                        } else {
+                            curr_post_id += paginate
+                        }
+
+                        tmpList = makeListFromPaginationResponse((response))
+                    }
+                    if (!PostsThread.isAlive) {
+                        PostsThread = Thread(runnable)
+                        PostsThread.start()
+
+                        adapter.concatLists(tmpList)
+                    }
+
+
                 }
+            } else {
+                //TODO
+                //Обработать ошибку сервера
             }
 
         }
@@ -68,22 +112,19 @@ class Feed : AppCompatActivity() {
 
 
 
-                if (visibleItemCount + firstVisibleItems >= totalItemCount - 1) {
-                    if (start_post_id.toInt() != 0) {
+                if (visibleItemCount + firstVisibleItems >= totalItemCount - 10) {
+                    if (totalItemCount != 0) {
                         val runnable = Runnable {
 
-                            curr_post_id += 5
+                            val response = getPostPaginatedSync(curr_post_id, mainPaginationLimit)
 
-                            val checklist = adapter.getList()
-                            if (checklist[checklist.size - 1].id == checklist[0].id) {
-                                curr_post_id = start_post_id+1
+                            if (response.postsList[0].code == 3) {
+                                curr_post_id = start_post_id + mainPaginationLimit
+                            } else {
+                                curr_post_id += mainPaginationLimit + 1
                             }
 
-                            val response = getPostPaginatedSync(curr_post_id)
-
                             tmpList = makeListFromPaginationResponse((response))
-
-
                         }
                         if (!PostsThread.isAlive) {
                             PostsThread = Thread(runnable)

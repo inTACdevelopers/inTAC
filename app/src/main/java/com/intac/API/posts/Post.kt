@@ -135,7 +135,7 @@ fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
     return stream.toByteArray()
 }
 
-fun getPostPaginated(post_id: Long, callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit) {
+fun getPostPaginated(post_id: Long, limit: Long, callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit) {
     var response: PostMakerProto.GetPostPaginatedResponse =
         PostMakerProto.GetPostPaginatedResponse.getDefaultInstance()
     thread {
@@ -153,7 +153,7 @@ fun getPostPaginated(post_id: Long, callback: (PostMakerProto.GetPostPaginatedRe
 
         val client = postGetterGrpc.newBlockingStub(channel)
 
-        val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).build()
+        val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).setLimit(limit).build()
         response = client.getPostPaginated(request)
         channel.shutdownNow()
 
@@ -168,6 +168,7 @@ fun getPostPaginated(post_id: Long, callback: (PostMakerProto.GetPostPaginatedRe
 }
 fun getPostPaginatedSync(
     post_id: Long,
+    limit: Long
 
     ): PostMakerProto.GetPostPaginatedResponse {
 
@@ -189,7 +190,7 @@ fun getPostPaginatedSync(
 
     val client = postGetterGrpc.newBlockingStub(channel)
 
-    val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).build()
+    val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).setLimit(limit).build()
     response = client.getPostPaginated(request)
     channel.shutdownNow()
 
