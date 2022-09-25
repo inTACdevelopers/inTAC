@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package registration;
 
-option java_package = "com.example.registration";
+option java_package = "com.intac.registration";
 option java_outer_classname = "RegistrarProto";
 
 service registrar{

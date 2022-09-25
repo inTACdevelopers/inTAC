@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package yml;
+
+option java_package = "com.intac.ymlUploader";
+option java_outer_classname = "YmlUploaderProto";
+
+service YmlPostMaker{
+  rpc UploadPosts (UploadRequest) returns (UploadResponse);
+}
+
+message UploadRequest{
+  int64 from_user = 1;
+  string ymlUrl = 2;
+}
+
+message UploadResponse{
+  int32 code = 1;
+  string state = 2;
+}

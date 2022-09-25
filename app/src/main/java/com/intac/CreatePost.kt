@@ -1,6 +1,5 @@
 package com.intac
 
-import android.R.attr.bitmap
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle

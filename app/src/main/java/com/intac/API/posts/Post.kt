@@ -2,21 +2,18 @@ package com.intac.API.posts
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import com.example.makeposts.PostMakerProto
-import com.example.makeposts.postGetterGrpc
-import com.example.makeposts.postMakerGrpc
+import com.intac.makeposts.PostMakerProto
+import com.intac.makeposts.postGetterGrpc
+import com.intac.makeposts.postMakerGrpc
+
 import com.google.protobuf.ByteString
-import com.intac.API.users.User
-import com.intac.CreatePost
+import com.intac.makeposts.LikePostGrpc
 import com.intac.conf
 import io.grpc.okhttp.OkHttpChannelBuilder
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.FileDescriptor
 import java.io.InputStream
 import kotlin.concurrent.thread
 
@@ -27,9 +24,13 @@ class Post(
     var sellerContact: String,
     var photoBitmap: Bitmap,
     var from_user: Long,
-    var creation_time: String = ""
+    var creation_time: String = "",
+    var likes: Long = 0,
+
+    var weight: Double = 0.0
 ) {
-// Здесь вдальнейшем появятся функции по работе с объектом поста
+    //Весовая функция для поста, посты сортируются по своему весу
+
 }
 
 fun makePost(post: Post): PostMakerProto.makePostResponse {
@@ -125,8 +126,6 @@ fun getPost(post_id: Long): PostMakerProto.GetPostResponse {
     return response
 }
 
-
-// Эта функция тебе не нужна
 fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
 
     val stream = ByteArrayOutputStream()
@@ -135,9 +134,12 @@ fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
     return stream.toByteArray()
 }
 
-fun getPostPaginated(post_id: Long, limit: Long, callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit) {
-    var response: PostMakerProto.GetPostPaginatedResponse =
-        PostMakerProto.GetPostPaginatedResponse.getDefaultInstance()
+fun getPostPaginated(
+    weight: Double,
+    limit: Long,
+    callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
+) {
+    var response: PostMakerProto.GetPostPaginatedResponse
     thread {
         var host: String = conf.HOST
         var port: Int = conf.PORT
@@ -153,24 +155,25 @@ fun getPostPaginated(post_id: Long, limit: Long, callback: (PostMakerProto.GetPo
 
         val client = postGetterGrpc.newBlockingStub(channel)
 
-        val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).setLimit(limit).build()
+        val request =
+            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setLimit(limit).build()
         response = client.getPostPaginated(request)
         channel.shutdownNow()
 
         Handler(Looper.getMainLooper()).post {
 
             callback.invoke(response)
-
         }
 
     }
 
 }
+
 fun getPostPaginatedSync(
-    post_id: Long,
+    weight: Double,
     limit: Long
 
-    ): PostMakerProto.GetPostPaginatedResponse {
+): PostMakerProto.GetPostPaginatedResponse {
 
     var response: PostMakerProto.GetPostPaginatedResponse =
         PostMakerProto.GetPostPaginatedResponse.getDefaultInstance()
@@ -190,7 +193,8 @@ fun getPostPaginatedSync(
 
     val client = postGetterGrpc.newBlockingStub(channel)
 
-    val request = PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id).setLimit(limit).build()
+    val request =
+        PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setLimit(limit).build()
     response = client.getPostPaginated(request)
     channel.shutdownNow()
 
@@ -201,6 +205,7 @@ fun getPostPaginatedSync(
 
 
 }
+
 fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
     var response: PostMakerProto.GetFirstPostIdResponse
 
@@ -234,7 +239,6 @@ fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
 
 }
 
-
 fun PhotoDecoder(bytes: ByteString?): Bitmap {
     val stream: InputStream = ByteArrayInputStream(bytes!!.toByteArray())
     return BitmapFactory.decodeStream(stream)
@@ -245,13 +249,46 @@ fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResp
     val out_list = ArrayList<Post>()
 
     for (item in response.postsList) {
-        out_list.add(
-            Post(
-                item.postId, item.postTitle, item.postDescription, item.sellerContact,
-                PhotoDecoder(item.photoBytes), item.userId.toLong(), item.creationTime
-            )
+        val post = Post(
+            item.postId, item.postTitle, item.postDescription, item.sellerContact,
+            PhotoDecoder(item.photoBytes), item.userId, item.creationTime
         )
+        post.weight = item.weight
+        out_list.add(post)
     }
     return out_list
 
 }
+
+
+fun LikePost(postId: Long, userId: Long, callback: (PostMakerProto.LikePostResponse) -> Unit) {
+    var response: PostMakerProto.LikePostResponse
+
+    thread {
+        var host: String = conf.HOST
+        var port: Int = conf.PORT
+
+        if (conf.DEBAG) {
+            host = conf.DEBAG_HOST
+            port = conf.DEBAG_PORT
+
+        }
+        println(host)
+        val channel =
+            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+        val client = LikePostGrpc.newBlockingStub(channel)
+
+        val request =
+            PostMakerProto.LikePostRequest.newBuilder().setPostId(postId).setFromUser(userId)
+                .build()
+
+        response = client.sendLike(request)
+
+        Handler(Looper.getMainLooper()).post {
+            callback.invoke(response)
+        }
+
+    }
+}
+

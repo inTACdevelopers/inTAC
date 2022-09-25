@@ -2,11 +2,11 @@ package com.intac.API.users
 
 
 import android.util.Log
-import com.example.authorization.authorizerGrpc
-import com.example.authorization.AuthorizerProto
+import com.intac.authorization.authorizerGrpc
+import com.intac.authorization.AuthorizerProto
 import com.intac.conf
-import com.example.registration.RegistrarProto
-import com.example.registration.registrarGrpc
+import com.intac.registration.RegistrarProto
+import com.intac.registration.registrarGrpc
 import io.grpc.okhttp.OkHttpChannelBuilder
 
 // Класс описываюсщий сущность пользователя
