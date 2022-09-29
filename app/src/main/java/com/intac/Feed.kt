@@ -1,27 +1,33 @@
 package com.intac
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.API.posts.*
-
 import com.intac.databinding.FeedBinding
 
+
+@Suppress("DEPRECATION")
 class Feed : AppCompatActivity() {
 
     lateinit var binding: FeedBinding
     lateinit var adapter: PostAdapter
     lateinit var recyclerView: RecyclerView
 
-    var curr_post_id: Long = 0
-    var start_post_id = curr_post_id
+    var curr_post_weight: Double = 0.0
+    var start_post_weight: Double = 0.0
 
     var PostsThread: Thread = Thread()
     var tmpList: ArrayList<Post> = ArrayList<Post>()
+
+    var mainPaginationLimit: Long = 3
+    var firstPaginationLimit: Long = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
@@ -30,6 +36,13 @@ class Feed : AppCompatActivity() {
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.rvPost.visibility = View.GONE
+
+
+        with(binding) {
+            val color = Color.parseColor("#0043BE");
+            pbLoader.indeterminateDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+        }
 
         init()
 
@@ -40,13 +53,46 @@ class Feed : AppCompatActivity() {
         GetFirstPostId { it ->
 
             if (it.code != 1) {
-                start_post_id = it.firstPostId.toLong()
-                curr_post_id = it.firstPostId.toLong()
+                curr_post_weight = it.weight
+                start_post_weight = it.weight
 
-                getPostPaginated(it.firstPostId.toLong()) {
+                getPostPaginated(it.weight, firstPaginationLimit) {
                     adapter.concatLists(makeListFromPaginationResponse(it))
 
+                    binding.rvPost.visibility = View.VISIBLE
+                    binding.pbLoader.visibility = View.GONE
+
+                    curr_post_weight = it.postsList[it.postsList.size - 1].weight
+
+
+                    val runnable = Runnable {
+
+                        val paginate: Long = 2
+
+                        val response = getPostPaginatedSync(curr_post_weight, paginate)
+
+                        curr_post_weight = if(response.postsList[0].code == 3) {
+                            start_post_weight
+
+                        } else {
+                            response.postsList[response.postsList.size - 1].weight
+
+                        }
+
+                        tmpList = makeListFromPaginationResponse((response))
+                    }
+                    if (!PostsThread.isAlive) {
+                        PostsThread = Thread(runnable)
+                        PostsThread.start()
+
+                        adapter.concatLists(tmpList)
+                    }
+
+
                 }
+            } else {
+                //TODO
+                //Обработать ошибку сервера
             }
 
         }
@@ -68,29 +114,9 @@ class Feed : AppCompatActivity() {
 
 
 
-                if (visibleItemCount + firstVisibleItems >= totalItemCount - 1) {
-                    if (start_post_id.toInt() != 0) {
-                        val runnable = Runnable {
-
-                            curr_post_id += 5
-
-                            val checklist = adapter.getList()
-                            if (checklist[checklist.size - 1].id == checklist[0].id) {
-                                curr_post_id = start_post_id+1
-                            }
-
-                            val response = getPostPaginatedSync(curr_post_id)
-
-                            tmpList = makeListFromPaginationResponse((response))
-
-
-                        }
-                        if (!PostsThread.isAlive) {
-                            PostsThread = Thread(runnable)
-                            PostsThread.start()
-
-                            adapter.concatLists(tmpList)
-                        }
+                if (visibleItemCount + firstVisibleItems >= totalItemCount - 10) {
+                    if (totalItemCount != 0) {
+                        UpdateFeed()
                     }
 
                 }
@@ -113,5 +139,30 @@ class Feed : AppCompatActivity() {
         recyclerView = binding.rvPost
         adapter = PostAdapter()
         recyclerView.adapter = adapter
+    }
+
+    private fun UpdateFeed() {
+        val runnable = Runnable {
+
+
+
+            val response = getPostPaginatedSync(curr_post_weight, mainPaginationLimit)
+
+            curr_post_weight = if(response.postsList[0].code == 3) {
+                start_post_weight
+
+            } else {
+                response.postsList[response.postsList.size - 1].weight
+
+            }
+
+            tmpList = makeListFromPaginationResponse((response))
+        }
+        if (!PostsThread.isAlive) {
+            PostsThread = Thread(runnable)
+            PostsThread.start()
+
+            adapter.concatLists(tmpList)
+        }
     }
 }

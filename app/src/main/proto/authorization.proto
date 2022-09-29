@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package authorization;
 
-option java_package = "com.example.authorization";
+option java_package = "com.intac.authorization";
 option java_outer_classname = "AuthorizerProto";
 
 service authorizer{

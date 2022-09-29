@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
+import com.intac.API.posts.LikePost
 import com.intac.API.users.*
 
 import com.intac.databinding.ActivityMainBinding
@@ -29,17 +30,7 @@ class MainActivity : AppCompatActivity() {
             goToReg()
         }
 
-        val user: User = User(
-            name = "Ivan",
-            surname = "Tokarev",
-            login = "1234567",
-            pass = "123",
-            company = "la",
-            birth = "10.2.2"
-        )
 
-        //val d = SingIn(user)
-        //Log.d("RegTest", d.state)
     }
 
     private fun appSignUp() { // Вход в аккаунт
