@@ -13,12 +13,14 @@ service postGetter{
   rpc getPost(GetPostRequest) returns(GetPostResponse);
   rpc GetPostPaginated(GetPostRequest) returns (GetPostPaginatedResponse);
   rpc GetFirstPostId (GetFirstPostIdRequest) returns (GetFirstPostIdResponse);
+  rpc CheckPostId (CheckPostIdRequest) returns (CheckPostIdResponse);
 }
 
 service LikePost{
   rpc SendLike (LikePostRequest) returns (LikePostResponse);
   rpc UnLike (UnLikePostRequest) returns (UnLikePostResponse);
 }
+
 
 message makePostRequest{
   string file_name = 1;
@@ -39,6 +41,7 @@ message GetPostRequest{
   int64 post_id = 1;
   int64 limit = 2;
   double weight = 3;
+  string session_name = 4;
 }
 
 message GetPostResponse{
@@ -54,12 +57,13 @@ message GetPostResponse{
   int64 user_id = 9;
   double weight = 10;
 }
+
 message GetPostPaginatedResponse{
   repeated GetPostResponse posts = 1 ;
 }
 
 message GetFirstPostIdRequest{
-
+  string session_name = 1;
 }
 message GetFirstPostIdResponse{
   int32 first_post_id = 1;
@@ -68,6 +72,12 @@ message GetFirstPostIdResponse{
   double weight = 4;
 }
 
+message CheckPostIdRequest{
+  int32 post_id = 1;
+}
+message CheckPostIdResponse{
+  bool state = 1;
+}
 
 message LikePostRequest{
   int64 from_user = 1;
