@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.API.posts.*
 import com.intac.databinding.FeedBinding
-import kotlin.math.log
 
 
 @Suppress("DEPRECATION")
@@ -20,7 +19,6 @@ class Feed : AppCompatActivity() {
     lateinit var binding: FeedBinding
     lateinit var adapter: PostAdapter
     lateinit var recyclerView: RecyclerView
-    lateinit var session_name: String
 
     var curr_post_weight: Double = 0.0
     var start_post_weight: Double = 0.0
@@ -31,11 +29,8 @@ class Feed : AppCompatActivity() {
     var mainPaginationLimit: Long = 3
     var firstPaginationLimit: Long = 3
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
-
-        session_name = intent.getStringExtra("session_name") as String
 
         super.onCreate(savedInstanceState)
         binding = FeedBinding.inflate(layoutInflater)
@@ -55,13 +50,13 @@ class Feed : AppCompatActivity() {
             goToCreatePost()
         }
 
-        GetFirstPostId(session_name) { it ->
+        GetFirstPostId { it ->
 
             if (it.code != 1) {
                 curr_post_weight = it.weight
                 start_post_weight = it.weight
 
-                getPostPaginated(it.weight, firstPaginationLimit,session_name) {
+                getPostPaginated(it.weight, firstPaginationLimit) {
                     adapter.concatLists(makeListFromPaginationResponse(it))
 
                     binding.rvPost.visibility = View.VISIBLE
@@ -74,7 +69,7 @@ class Feed : AppCompatActivity() {
 
                         val paginate: Long = 2
 
-                        val response = getPostPaginatedSync(curr_post_weight, paginate,session_name)
+                        val response = getPostPaginatedSync(curr_post_weight, paginate)
 
                         curr_post_weight = if(response.postsList[0].code == 3) {
                             start_post_weight
@@ -151,7 +146,7 @@ class Feed : AppCompatActivity() {
 
 
 
-            val response = getPostPaginatedSync(curr_post_weight, mainPaginationLimit,session_name)
+            val response = getPostPaginatedSync(curr_post_weight, mainPaginationLimit)
 
             curr_post_weight = if(response.postsList[0].code == 3) {
                 start_post_weight
