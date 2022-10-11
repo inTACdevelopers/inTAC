@@ -137,6 +137,7 @@ fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
 fun getPostPaginated(
     weight: Double,
     limit: Long,
+    session_name:String,
     callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
 ) {
     var response: PostMakerProto.GetPostPaginatedResponse
@@ -156,7 +157,7 @@ fun getPostPaginated(
         val client = postGetterGrpc.newBlockingStub(channel)
 
         val request =
-            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setLimit(limit).build()
+            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setSessionName(session_name).setLimit(limit).build()
         response = client.getPostPaginated(request)
         channel.shutdownNow()
 
@@ -171,7 +172,8 @@ fun getPostPaginated(
 
 fun getPostPaginatedSync(
     weight: Double,
-    limit: Long
+    limit: Long,
+    session_name:String,
 
 ): PostMakerProto.GetPostPaginatedResponse {
 
@@ -194,7 +196,7 @@ fun getPostPaginatedSync(
     val client = postGetterGrpc.newBlockingStub(channel)
 
     val request =
-        PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setLimit(limit).build()
+        PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setSessionName(session_name).setLimit(limit).build()
     response = client.getPostPaginated(request)
     channel.shutdownNow()
 
@@ -206,7 +208,7 @@ fun getPostPaginatedSync(
 
 }
 
-fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
+fun GetFirstPostId(session_name:String,callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
     var response: PostMakerProto.GetFirstPostIdResponse
 
 
@@ -224,7 +226,7 @@ fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
 
         val client = postGetterGrpc.newBlockingStub(channel)
 
-        val request = PostMakerProto.GetFirstPostIdRequest.newBuilder().build()
+        val request = PostMakerProto.GetFirstPostIdRequest.newBuilder().setSessionName(session_name).build()
         response = client.getFirstPostId(request)
         channel.shutdownNow()
 

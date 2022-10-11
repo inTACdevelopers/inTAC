@@ -1,13 +1,19 @@
 package com.intac.API.users
 
 
+import android.os.Looper
 import android.util.Log
 import com.intac.authorization.authorizerGrpc
 import com.intac.authorization.AuthorizerProto
 import com.intac.conf
+import com.intac.makeposts.PostMakerProto
 import com.intac.registration.RegistrarProto
 import com.intac.registration.registrarGrpc
 import io.grpc.okhttp.OkHttpChannelBuilder
+import com.intac.sessions.SessionServiceProto
+import com.intac.sessions.postSessionsServiceGrpc
+import java.util.logging.Handler
+import kotlin.concurrent.thread
 
 // Класс описываюсщий сущность пользователя
 // Company - не обязательный параметр
@@ -133,4 +139,85 @@ fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
     singUpThread.start()
     singUpThread.join()
     return response
+}
+
+fun CreateSession(userId: Int,callback: (SessionServiceProto.CreatePostSessionResponse) -> Unit){
+    //TODO
+    // Вызвать функцию Ильи (та что с файлами)
+    // Здесь создание файла и его шифрация
+    // if (session.Exists()) -> do my code
+    // else -> dont do my code
+
+    var response: SessionServiceProto.CreatePostSessionResponse
+
+    thread {
+        var host: String = conf.HOST
+        var port: Int = conf.PORT
+
+        if (conf.DEBAG) {
+            host = conf.DEBAG_HOST
+            port = conf.DEBAG_PORT
+
+        }
+        println(host)
+        val channel =
+            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+        val client = postSessionsServiceGrpc.newBlockingStub(channel)
+
+        val request =
+            SessionServiceProto.CreatePostSessionRequest.newBuilder().setUserId(userId.toLong())
+                .build()
+
+        response = client.createPostSession(request)
+
+
+        channel.shutdownNow()
+
+        android.os.Handler(Looper.getMainLooper()).post {
+
+            callback.invoke(response)
+        }
+    }
+
+
+
+}
+
+fun DropSession(userId: Int,callback: (SessionServiceProto.DropSessionResponse) -> Unit) {
+    //TODO
+    // Вызвать функцию Ильи (та что с файлами)
+    // Но здесь про удаление
+
+    var response: SessionServiceProto.DropSessionResponse
+
+    thread {
+        var host: String = conf.HOST
+        var port: Int = conf.PORT
+
+        if (conf.DEBAG) {
+            host = conf.DEBAG_HOST
+            port = conf.DEBAG_PORT
+
+        }
+        println(host)
+        val channel =
+            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+        val client = postSessionsServiceGrpc.newBlockingStub(channel)
+
+        val request =
+            SessionServiceProto.DropSessionRequest.newBuilder().setUserId(userId.toLong())
+                .build()
+
+        response = client.dropPostSession(request)
+
+
+        channel.shutdownNow()
+
+        android.os.Handler(Looper.getMainLooper()).post {
+
+            callback.invoke(response)
+        }
+    }
 }

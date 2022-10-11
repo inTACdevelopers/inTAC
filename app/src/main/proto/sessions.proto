@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package sessions;
+
+option java_package = "com.intac.sessions";
+option java_outer_classname = "SessionServiceProto";
+
+service postSessionsService{
+  rpc CreatePostSession (CreatePostSessionRequest) returns (CreatePostSessionResponse);
+  rpc DropPostSession (DropSessionRequest) returns (DropSessionResponse);
+}
+
+message CreatePostSessionRequest{
+  int64 user_id = 1;
+}
+message CreatePostSessionResponse{
+  int32 code = 1;
+  string state = 2;
+  string session_name = 3;
+}
+message DropSessionRequest{
+  int64 user_id = 1;
+}
+message DropSessionResponse{
+  int32 code = 1;
+  string state = 2;
+}
