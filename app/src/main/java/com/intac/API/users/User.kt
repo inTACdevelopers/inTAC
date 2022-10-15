@@ -12,6 +12,7 @@ import com.intac.registration.registrarGrpc
 import io.grpc.okhttp.OkHttpChannelBuilder
 import com.intac.sessions.SessionServiceProto
 import com.intac.sessions.postSessionsServiceGrpc
+import okio.ByteString
 import java.util.logging.Handler
 import kotlin.concurrent.thread
 
@@ -141,7 +142,42 @@ fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
     return response
 }
 
-fun CreateSession(userId: Int,callback: (SessionServiceProto.CreatePostSessionResponse) -> Unit){
+fun SingUpByToken(token: com.google.protobuf.ByteString, callback: (AuthorizerProto.SingUpResponse) -> Unit) {
+    var response: AuthorizerProto.SingUpResponse
+
+    thread {
+        var host: String = conf.HOST
+        var port: Int = conf.PORT
+
+        if (conf.DEBAG) {
+            host = conf.DEBAG_HOST
+            port = conf.DEBAG_PORT
+
+        }
+        println(host)
+        val channel =
+            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+        val client = authorizerGrpc.newBlockingStub(channel)
+
+        val request =
+            AuthorizerProto.SingUpByTokenRequest.newBuilder().setToken(token)
+                .build()
+
+        response = client.singUpByToken(request)
+
+
+        channel.shutdownNow()
+
+        android.os.Handler(Looper.getMainLooper()).post {
+
+            callback.invoke(response)
+        }
+    }
+
+}
+
+fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionResponse) -> Unit) {
     //TODO
     // Вызвать функцию Ильи (та что с файлами)
     // Здесь создание файла и его шифрация
@@ -181,10 +217,9 @@ fun CreateSession(userId: Int,callback: (SessionServiceProto.CreatePostSessionRe
     }
 
 
-
 }
 
-fun DropSession(userId: Int,callback: (SessionServiceProto.DropSessionResponse) -> Unit) {
+fun DropSession(userId: Int, callback: (SessionServiceProto.DropSessionResponse) -> Unit) {
     //TODO
     // Вызвать функцию Ильи (та что с файлами)
     // Но здесь про удаление

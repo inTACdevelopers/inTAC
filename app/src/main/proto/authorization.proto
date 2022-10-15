@@ -5,14 +5,22 @@ package authorization;
 option java_package = "com.intac.authorization";
 option java_outer_classname = "AuthorizerProto";
 
+
+
 service authorizer{
   rpc SingUp(SingUpRequest) returns (SingUpResponse);
+  rpc SingUpByToken (SingUpByTokenRequest) returns (SingUpResponse);
 }
 
 message SingUpRequest{
   string login = 1 ;
   string password = 2;
 }
+message SingUpByTokenRequest{
+  bytes token = 1;
+}
+
+
 message SingUpResponse{
   int32 code = 1;
   string state = 2;

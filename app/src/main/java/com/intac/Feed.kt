@@ -57,7 +57,7 @@ class Feed : AppCompatActivity() {
 
         GetFirstPostId(session_name) { it ->
 
-            if (it.code != 1) {
+            if (it.code == 0) {
                 curr_post_weight = it.weight
                 start_post_weight = it.weight
 
