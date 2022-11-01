@@ -7,11 +7,22 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavArgument
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.intac.API.posts.*
 import com.intac.databinding.FeedBinding
-import kotlin.math.log
+import kotlinx.android.synthetic.main.feed.view.*
 
 
 @Suppress("DEPRECATION")
@@ -43,6 +54,24 @@ class Feed : AppCompatActivity() {
 
         binding.rvPost.visibility = View.GONE
 
+        val navView: BottomNavigationView = binding.navView
+        val hostFragment = binding.navHostFragment
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navHome,
+                R.id.navSearch,
+                R.id.navCreatePost,
+                R.id.navReactions,
+                R.id.navProfile
+            )
+        )
+
+        val navController = navView.findNavController()
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+
 
         with(binding) {
             val color = Color.parseColor("#0043BE");
@@ -51,9 +80,9 @@ class Feed : AppCompatActivity() {
 
         init()
 
-        binding.btAddPost.setOnClickListener() {
+        /*binding.btAddPost.setOnClickListener() {
             goToCreatePost()
-        }
+        }*/
 
         GetFirstPostId(session_name) { it ->
 
@@ -61,7 +90,7 @@ class Feed : AppCompatActivity() {
                 curr_post_weight = it.weight
                 start_post_weight = it.weight
 
-                getPostPaginated(it.weight, firstPaginationLimit,session_name) {
+                getPostPaginated(it.weight, firstPaginationLimit, session_name) {
                     adapter.concatLists(makeListFromPaginationResponse(it))
 
                     binding.rvPost.visibility = View.VISIBLE
@@ -74,9 +103,10 @@ class Feed : AppCompatActivity() {
 
                         val paginate: Long = 2
 
-                        val response = getPostPaginatedSync(curr_post_weight, paginate,session_name)
+                        val response =
+                            getPostPaginatedSync(curr_post_weight, paginate, session_name)
 
-                        curr_post_weight = if(response.postsList[0].code == 3) {
+                        curr_post_weight = if (response.postsList[0].code == 3) {
                             start_post_weight
 
                         } else {
@@ -99,7 +129,6 @@ class Feed : AppCompatActivity() {
                 //TODO
                 //Обработать ошибку сервера
             }
-
         }
     }
 
@@ -117,16 +146,11 @@ class Feed : AppCompatActivity() {
                 val firstVisibleItems =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
-
-
                 if (visibleItemCount + firstVisibleItems >= totalItemCount - 10) {
                     if (totalItemCount != 0) {
                         UpdateFeed()
                     }
-
                 }
-
-
             }
         })
     }
@@ -150,10 +174,9 @@ class Feed : AppCompatActivity() {
         val runnable = Runnable {
 
 
+            val response = getPostPaginatedSync(curr_post_weight, mainPaginationLimit, session_name)
 
-            val response = getPostPaginatedSync(curr_post_weight, mainPaginationLimit,session_name)
-
-            curr_post_weight = if(response.postsList[0].code == 3) {
+            curr_post_weight = if (response.postsList[0].code == 3) {
                 start_post_weight
 
             } else {

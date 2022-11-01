@@ -5,49 +5,65 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent">
+    <ImageView
+        android:id="@+id/imagePost"
+        android:layout_width="375dp"
+        android:layout_height="375dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
-        <ImageView
-            android:id="@+id/imagePost"
-            android:layout_width="375dp"
-            android:layout_height="375dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="69dp"
-            android:layout_marginEnd="16dp"
-            tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/btBuying"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="29dp"
+        android:background="@drawable/buying_bt"
+        android:backgroundTint=" #0043BE"
+        android:text="@string/btBuying"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagePost" />
 
-        <TextView
-            android:id="@+id/tvPostName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="11dp"
-            android:text="@string/textPostName"
-            android:textColor=" #000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvPostName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/textPostName"
+        android:textColor=" #000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btLike" />
 
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="11dp"
-            android:text="@string/textPostDescription"
-            android:textColor=" #000000" />
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/textPostDescription"
+        android:textColor=" #000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPostName" />
 
-        <TextView
-            android:id="@+id/tvContact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="11dp"
-            android:text="@string/textContacts"
-            android:textColor=" #000000" />
+    <ToggleButton
+        android:id="@+id/btLike"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/btlike_selector"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagePost" />
 
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

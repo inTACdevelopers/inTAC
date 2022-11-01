@@ -17,6 +17,15 @@
         android:theme="@style/Theme.InTAC"
         tools:targetApi="31">
         <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Reactions"
+            android:exported="false" />
+        <activity
+            android:name=".Search"
+            android:exported="false" />
+        <activity
             android:name=".Feed"
             android:exported="false" />
         <activity

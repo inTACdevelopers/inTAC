@@ -4,8 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
-import com.intac.API.posts.LikePost
 import com.intac.API.users.*
 
 import com.intac.databinding.ActivityMainBinding

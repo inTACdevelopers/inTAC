@@ -37,4 +37,14 @@
     <string name="textPostName">Название</string>
     <string name="textPostDescription">Описание</string>
     <string name="textContacts">Контакты продавца</string>
+    <string name="title_feed">Лента</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="plainSearch">Поиск</string>
+    <string name="btBuying">КУПИТЬ</string>
+    <string name="title_search">Поиск</string>
+    <string name="title_addPost">Создать</string>
+    <string name="title_reactions">Реакции</string>
+    <string name="title_profile">Профиль</string>
+    <string name="text_soon">Скоро</string>
 </resources>

@@ -92,29 +92,13 @@
         android:layout_width="147dp"
         android:layout_height="49dp"
         android:layout_marginTop="45dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/choose_side"
-        android:textAllCaps="false"
-        android:textColor="@color/text_reg_choose_color"
-        android:textOff="@string/btForBusiness"
-        android:textOn="@string/btForBusiness"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHelpRegistration" />
-
-    <ToggleButton
-        android:id="@+id/btForMe"
-        android:layout_width="147dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="45dp"
         android:layout_marginEnd="36dp"
-        android:background="@drawable/choose_side"
+        android:background="@drawable/btforbusiness_selector"
         android:textAllCaps="false"
         android:textColor="@color/text_reg_choose_color"
-        android:textOff="@string/btForMe"
-        android:textOn="@string/btForMe"
-        app:layout_constraintEnd_toStartOf="@+id/btForBusiness"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHelpRegistration" />
 
     <EditText
@@ -239,5 +223,17 @@
         app:layout_constraintEnd_toStartOf="@+id/plainYear"
         app:layout_constraintStart_toEndOf="@+id/plainDay"
         app:layout_constraintTop_toBottomOf="@+id/plainFirstName" />
+
+    <ToggleButton
+        android:id="@+id/btForMe"
+        android:layout_width="147dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/btforme_selector"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintEnd_toStartOf="@+id/btForBusiness"
+        app:layout_constraintTop_toBottomOf="@+id/textHelpRegistration" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

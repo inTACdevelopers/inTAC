@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_draph"
+    app:startDestination="@id/navHome">
+
+    <fragment
+        android:id="@+id/navHome"
+        android:name="com.intac.NavFragment"
+        android:label="@string/title_feed"
+        tools:layout="@layout/fragment_nav2" />
+    <fragment
+        android:id="@+id/navSearch"
+        android:name="com.intac.Search"
+        android:label="@string/title_search"
+        tools:layout="@layout/activity_search" />
+    <fragment
+        android:id="@+id/navCreatePost"
+        android:name="com.intac.CreatePost"
+        android:label="@string/title_addPost"
+        tools:layout="@layout/activity_create_post" />
+    <fragment
+        android:id="@+id/navReactions"
+        android:name="com.intac.Reactions"
+        android:label="@string/title_reactions"
+        tools:layout="@layout/activity_reactions" />
+    <fragment
+        android:id="@+id/navProfile"
+        android:name="com.intac.Profile"
+        android:label="@string/title_profile"
+        tools:layout="@layout/activity_profile" />
+</navigation>

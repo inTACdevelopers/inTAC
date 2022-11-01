@@ -22,7 +22,7 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.tvDescription.text = postList[position].description
-        holder.itemView.tvContact.text = postList[position].sellerContact
+        //holder.itemView.tvContact.text = postList[position].sellerContact
         holder.itemView.tvPostName.text = postList[position].title
         holder.itemView.imagePost.setImageBitmap(postList[position].photoBitmap)
     }

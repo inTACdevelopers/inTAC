@@ -7,6 +7,7 @@
     android:background="#F5F5F5"
     tools:context=".Feed">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPost"
         android:layout_width="match_parent"
@@ -24,18 +25,6 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <ImageButton
-        android:id="@+id/btAddPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="10dp"
-        android:background="#00000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/add_post_btn"
-        tools:ignore="SpeakableTextPresentCheck" />
-
     <ProgressBar
         android:id="@+id/pbLoader"
         style="?android:attr/progressBarStyle"
@@ -44,7 +33,40 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rvPost"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/rvPost"
+        app:layout_constraintTop_toTopOf="@+id/rvPost"
+        app:layout_constraintVertical_bias="0.0"
+        app:navGraph="@navigation/nav_draph"
         />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        >
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
