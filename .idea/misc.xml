@@ -11,6 +11,7 @@
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/feed.xml" value="0.25" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/post.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/alexe/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_registration.xml" value="0.23794871794871794" />
+        <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/avatar_bordershape.xml" value="0.2085" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/btforbusiness_selector.xml" value="0.2085" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/btforme_selector.xml" value="0.2085" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/btfrome_selector.xml" value="0.146" />
@@ -21,6 +22,8 @@
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/enter_btn.xml" value="0.129" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/test.xml" value="0.1" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_create_post.xml" value="0.4" />
+        <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_edit_business_profile.xml" value="0.4" />
+        <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_edit_personal_profile.xml" value="0.264" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_profile.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_reactions.xml" value="0.38697916666666665" />

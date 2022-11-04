@@ -47,4 +47,13 @@
     <string name="title_reactions">Реакции</string>
     <string name="title_profile">Профиль</string>
     <string name="text_soon">Скоро</string>
+    <string name="edit_Personal">Редактировать профиль</string>
+    <string name="textChangePhotoPersonal">Изменить фото профиля</string>
+    <string name="editNamePersonal">Имя</string>
+    <string name="editUserNamePersonal">Имя пользователя</string>
+    <string name="editDescriptionPersonal">О себе</string>
+    <string name="btSave">Сохранить</string>
+    <string name="textChangePassword">Изменить пароль</string>
+    <string name="editDescriptionBusiness">О компании</string>
+    <string name="editNameBusiness">Название компании</string>
 </resources>
