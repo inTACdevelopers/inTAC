@@ -7,24 +7,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.R
-import kotlinx.android.synthetic.main.post.view.*
+import com.intac.databinding.PostBinding
 
-class PostAdapter : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+class PostAdapter : RecyclerView.Adapter<PostAdapter.PostHolder>() {
 
     private var postList = ArrayList<Post>()
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class PostHolder(view: View) : RecyclerView.ViewHolder(view){
+        val binding = PostBinding.bind(view)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.post, parent, false)
-        return ViewHolder(view)
+        fun bind(post: Post) = with(binding){
+            tvPostName.text = post.title
+            tvDescription.text = post.description;
+            imagePost.setImageBitmap(post.photoBitmap)
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.tvDescription.text = postList[position].description
-        //holder.itemView.tvContact.text = postList[position].sellerContact
-        holder.itemView.tvPostName.text = postList[position].title
-        holder.itemView.imagePost.setImageBitmap(postList[position].photoBitmap)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
+
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.post, parent, false)
+        return PostHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: PostHolder, position: Int) {
+        holder.bind(postList[position])
+//        holder.itemView.tvDescription.text = postList[position].description
+//        holder.itemView.tvContact.text = postList[position].sellerContact
+//        holder.itemView.tvPostName.text = postList[position].title
+//        holder.itemView.imagePost.setImageBitmap(postList[position].photoBitmap)
     }
 
     override fun getItemCount(): Int {

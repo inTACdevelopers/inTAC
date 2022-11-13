@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.intac.API.posts.*
+import com.intac.API.users.DropSessionSync
 import com.intac.databinding.FeedBinding
-import kotlinx.android.synthetic.main.feed.view.*
 
 
 @Suppress("DEPRECATION")
@@ -54,23 +54,19 @@ class Feed : AppCompatActivity() {
 
         binding.rvPost.visibility = View.GONE
 
-        val navView: BottomNavigationView = binding.navView
-        val hostFragment = binding.navHostFragment
+        binding.navView.setOnNavigationItemSelectedListener()
+        {
+            when (it.itemId) {
+                R.id.navigation_feed -> {}
+                R.id.navigation_search -> {}
+                R.id.navigation_addPost -> {}
+                R.id.navigation_reactions -> {}
+                R.id.navigation_profile -> {}
+            }
+            true
+        }
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navHome,
-                R.id.navSearch,
-                R.id.navCreatePost,
-                R.id.navReactions,
-                R.id.navProfile
-            )
-        )
 
-        val navController = navView.findNavController()
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
 
 
         with(binding) {
@@ -80,9 +76,7 @@ class Feed : AppCompatActivity() {
 
         init()
 
-        /*binding.btAddPost.setOnClickListener() {
-            goToCreatePost()
-        }*/
+
 
         GetFirstPostId(session_name) { it ->
 
@@ -153,6 +147,11 @@ class Feed : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onStop() {
+        DropSessionSync(session_name)
+        super.onStop()
     }
 
     private fun goToCreatePost() {

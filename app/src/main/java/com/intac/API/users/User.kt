@@ -219,7 +219,8 @@ fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionR
 
 }
 
-fun DropSession(userId: Int, callback: (SessionServiceProto.DropSessionResponse) -> Unit) {
+
+fun DropSessionSync(session_name: String) {
     //TODO
     // Вызвать функцию Ильи (та что с файлами)
     // Но здесь про удаление
@@ -242,17 +243,13 @@ fun DropSession(userId: Int, callback: (SessionServiceProto.DropSessionResponse)
         val client = postSessionsServiceGrpc.newBlockingStub(channel)
 
         val request =
-            SessionServiceProto.DropSessionRequest.newBuilder().setUserId(userId.toLong())
+            SessionServiceProto.DropSessionRequest.newBuilder().setSessionName(session_name)
                 .build()
 
         response = client.dropPostSession(request)
 
 
         channel.shutdownNow()
-
-        android.os.Handler(Looper.getMainLooper()).post {
-
-            callback.invoke(response)
-        }
-    }
+    }.join()
 }
+
