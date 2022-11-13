@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/drawable/btforme_selector.xml" value="0.1705" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/feed.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/feeditem.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/fragment_nav.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/fragment_nav2.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/post.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/drawable/choose_side_btn.xml" value="0.269" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/drawable/test.xml" value="0.269" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/layout/activity_create_post.xml" value="0.36666666666666664" />

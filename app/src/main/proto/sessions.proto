@@ -19,7 +19,7 @@ message CreatePostSessionResponse{
   string session_name = 3;
 }
 message DropSessionRequest{
-  int64 user_id = 1;
+  string session_name = 1;
 }
 message DropSessionResponse{
   int32 code = 1;
