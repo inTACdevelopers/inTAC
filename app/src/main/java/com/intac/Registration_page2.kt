@@ -16,11 +16,11 @@ class Registration_page2 : AppCompatActivity() {
         binding = ActivityRegistrationPage2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btBackPage2.setOnClickListener() {
+        binding.btBackPage2.setOnClickListener(){
             appBack()
         }
 
-        binding.btCreateAcc.setOnClickListener() {
+        binding.btCreateAcc.setOnClickListener(){
             appSignIn()
         }
     }
@@ -50,37 +50,16 @@ class Registration_page2 : AppCompatActivity() {
             if (SignInResponse.state == "OK") {
                 Log.d("TestReg", "Success")
 
-
                 val SignUpResponse = SingUp(user.login, user.pass)
 
-                CreateSession(SignUpResponse.id) {
-
-                    if(it.state=="OK"){
-                        val intent = Intent(this@Registration_page2, Feed::class.java)
-                        intent.putExtra("id", SignUpResponse.id)
-                        intent.putExtra("session_name",it.sessionName)
-                        startActivity(intent)
-                    }
-                    else{
-                        //TODO
-                        // Здесь обработать ошибку, у пользователя какого-то хуя
-                        // сохранилась сессия (она должна удаляться)
-                    }
-
-                }
-
-
+                val intent = Intent(this@Registration_page2, Feed::class.java)
+                intent.putExtra("id", SignUpResponse.id)
+                startActivity(intent)
             } else {
-                Log.d(
-                    "TestReg",
-                    SignInResponse.state
-                ) // в будущем будет соответствующая ошибка на экране
+                Log.d("TestReg", SignInResponse.state) // в будущем будет соответствующая ошибка на экране
             }
         } else {
-            Log.d(
-                "TestReg",
-                "The passwords are not the same"
-            ) // в будущем будет соответствующая ошибка на экране
+            Log.d("TestReg", "The passwords are not the same") // в будущем будет соответствующая ошибка на экране
         }
     }
 }
