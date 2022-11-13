@@ -8,19 +8,11 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.NavArgument
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.intac.API.posts.*
+import com.intac.API.users.CreateSession
 import com.intac.API.users.DropSessionSync
 import com.intac.databinding.FeedBinding
 
@@ -32,6 +24,7 @@ class Feed : AppCompatActivity() {
     lateinit var adapter: PostAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var session_name: String
+    var user_id: Long = -1
 
     var curr_post_weight: Double = 0.0
     var start_post_weight: Double = 0.0
@@ -44,9 +37,11 @@ class Feed : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         supportActionBar?.hide()
 
-        session_name = intent.getStringExtra("session_name") as String
+
+        user_id = intent.getLongExtra("id",-1)
 
         super.onCreate(savedInstanceState)
         binding = FeedBinding.inflate(layoutInflater)
@@ -76,54 +71,62 @@ class Feed : AppCompatActivity() {
 
         init()
 
+        //TODO
+        // проверить, что штука с удалением сессий работает
+        // потому что сейчас не могу гонять по разным активити :(
+        // т.к переходы между ними прогает Ваня
+        
+        CreateSession(user_id.toInt()){
+            session_name = it.sessionName
+
+            GetFirstPostId(session_name) { it ->
+
+                if (it.code == 0) {
+                    curr_post_weight = it.weight
+                    start_post_weight = it.weight
+
+                    getPostPaginated(it.weight, firstPaginationLimit, session_name) {
+                        adapter.concatLists(makeListFromPaginationResponse(it))
+
+                        binding.rvPost.visibility = View.VISIBLE
+                        binding.pbLoader.visibility = View.GONE
+
+                        curr_post_weight = it.postsList[it.postsList.size - 1].weight
 
 
-        GetFirstPostId(session_name) { it ->
+                        val runnable = Runnable {
 
-            if (it.code == 0) {
-                curr_post_weight = it.weight
-                start_post_weight = it.weight
+                            val paginate: Long = 2
 
-                getPostPaginated(it.weight, firstPaginationLimit, session_name) {
-                    adapter.concatLists(makeListFromPaginationResponse(it))
+                            val response =
+                                getPostPaginatedSync(curr_post_weight, paginate, session_name)
 
-                    binding.rvPost.visibility = View.VISIBLE
-                    binding.pbLoader.visibility = View.GONE
+                            curr_post_weight = if (response.postsList[0].code == 3) {
+                                start_post_weight
 
-                    curr_post_weight = it.postsList[it.postsList.size - 1].weight
+                            } else {
+                                response.postsList[response.postsList.size - 1].weight
 
+                            }
 
-                    val runnable = Runnable {
+                            tmpList = makeListFromPaginationResponse((response))
+                        }
+                        if (!PostsThread.isAlive) {
+                            PostsThread = Thread(runnable)
+                            PostsThread.start()
 
-                        val paginate: Long = 2
-
-                        val response =
-                            getPostPaginatedSync(curr_post_weight, paginate, session_name)
-
-                        curr_post_weight = if (response.postsList[0].code == 3) {
-                            start_post_weight
-
-                        } else {
-                            response.postsList[response.postsList.size - 1].weight
-
+                            adapter.concatLists(tmpList)
                         }
 
-                        tmpList = makeListFromPaginationResponse((response))
+
                     }
-                    if (!PostsThread.isAlive) {
-                        PostsThread = Thread(runnable)
-                        PostsThread.start()
-
-                        adapter.concatLists(tmpList)
-                    }
-
-
+                } else {
+                    //TODO
+                    //Обработать ошибку сервера
                 }
-            } else {
-                //TODO
-                //Обработать ошибку сервера
             }
         }
+
     }
 
     override fun onResume() {

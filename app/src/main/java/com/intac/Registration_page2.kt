@@ -53,21 +53,10 @@ class Registration_page2 : AppCompatActivity() {
 
                 val SignUpResponse = SingUp(user.login, user.pass)
 
-                CreateSession(SignUpResponse.id) {
 
-                    if(it.state=="OK"){
-                        val intent = Intent(this@Registration_page2, Feed::class.java)
-                        intent.putExtra("id", SignUpResponse.id)
-                        intent.putExtra("session_name",it.sessionName)
-                        startActivity(intent)
-                    }
-                    else{
-                        //TODO
-                        // Здесь обработать ошибку, у пользователя какого-то хуя
-                        // сохранилась сессия (она должна удаляться)
-                    }
-
-                }
+                val intent = Intent(this@Registration_page2, Feed::class.java)
+                intent.putExtra("id", SignUpResponse.id)
+                startActivity(intent)
 
 
             } else {

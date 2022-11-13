@@ -36,19 +36,11 @@ class MainActivity : AppCompatActivity() {
         if (SignUpResponse.state == "OK") {
             Log.d("LoginTest", "Success")
 
-            CreateSession(SignUpResponse.id) {
-                if (it.state == "OK") {
-                    val intent = Intent(this@MainActivity, Feed::class.java)
-                    intent.putExtra("id", SignUpResponse.id.toLong())
-                    intent.putExtra("session_name", it.sessionName)
-                    startActivity(intent)
-                } else {
-                    //TODO
-                    // Здесь обработать ошибку, у пользователя какого-то хуя
-                    // сохранилась сессия (она должна удаляться)
 
-                }
-            }
+            val intent = Intent(this@MainActivity, Feed::class.java)
+            intent.putExtra("id", SignUpResponse.id.toLong())
+            startActivity(intent)
+
 
         } else {
             Log.d(
