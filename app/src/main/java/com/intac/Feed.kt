@@ -37,10 +37,7 @@ class Feed : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         supportActionBar?.hide()
-
-
         user_id = intent.getLongExtra("id",-1)
 
         super.onCreate(savedInstanceState)
@@ -53,10 +50,26 @@ class Feed : AppCompatActivity() {
         {
             when (it.itemId) {
                 R.id.navigation_feed -> {}
-                R.id.navigation_search -> {}
-                R.id.navigation_addPost -> {}
-                R.id.navigation_reactions -> {}
-                R.id.navigation_profile -> {}
+                R.id.navigation_search -> {
+                    val intent = Intent(this@Feed, Search::class.java)
+                    intent.putExtra("id", user_id)
+                    startActivity(intent)
+                }
+                R.id.navigation_addPost -> {
+                    val intent = Intent(this@Feed, CreatePost::class.java)
+                    intent.putExtra("id", user_id)
+                    startActivity(intent)
+                }
+                R.id.navigation_reactions -> {
+                    val intent = Intent(this@Feed, Reactions::class.java)
+                    intent.putExtra("id", user_id)
+                    startActivity(intent)
+                }
+                R.id.navigation_profile -> {
+                    val intent = Intent(this@Feed, Profile::class.java)
+                    intent.putExtra("id", user_id)
+                    startActivity(intent)
+                }
             }
             true
         }

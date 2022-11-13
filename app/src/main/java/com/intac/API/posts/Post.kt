@@ -137,6 +137,7 @@ fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
 fun getPostPaginated(
     weight: Double,
     limit: Long,
+    session_name:String,
     callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
 ) {
     var response: PostMakerProto.GetPostPaginatedResponse
@@ -171,7 +172,8 @@ fun getPostPaginated(
 
 fun getPostPaginatedSync(
     weight: Double,
-    limit: Long
+    limit: Long,
+    session_name:String,
 
 ): PostMakerProto.GetPostPaginatedResponse {
 
@@ -206,7 +208,7 @@ fun getPostPaginatedSync(
 
 }
 
-fun GetFirstPostId(callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
+fun GetFirstPostId(session_name:String, callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
     var response: PostMakerProto.GetFirstPostIdResponse
 
 
