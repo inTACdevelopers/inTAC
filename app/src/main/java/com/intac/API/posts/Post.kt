@@ -157,7 +157,7 @@ fun getPostPaginated(
         val client = postGetterGrpc.newBlockingStub(channel)
 
         val request =
-            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setLimit(limit).build()
+            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setSessionName(session_name).setLimit(limit).build()
         response = client.getPostPaginated(request)
         channel.shutdownNow()
 
@@ -196,7 +196,7 @@ fun getPostPaginatedSync(
     val client = postGetterGrpc.newBlockingStub(channel)
 
     val request =
-        PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setLimit(limit).build()
+        PostMakerProto.GetPostRequest.newBuilder().setSessionName(session_name).setWeight(weight).setLimit(limit).build()
     response = client.getPostPaginated(request)
     channel.shutdownNow()
 
@@ -226,7 +226,7 @@ fun GetFirstPostId(session_name:String, callback: (PostMakerProto.GetFirstPostId
 
         val client = postGetterGrpc.newBlockingStub(channel)
 
-        val request = PostMakerProto.GetFirstPostIdRequest.newBuilder().build()
+        val request = PostMakerProto.GetFirstPostIdRequest.newBuilder().setSessionName(session_name).build()
         response = client.getFirstPostId(request)
         channel.shutdownNow()
 

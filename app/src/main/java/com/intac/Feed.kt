@@ -88,10 +88,9 @@ class Feed : AppCompatActivity() {
         // проверить, что штука с удалением сессий работает
         // потому что сейчас не могу гонять по разным активити :(
         // т.к переходы между ними прогает Ваня
-        
+
         CreateSession(user_id.toInt()){
             session_name = it.sessionName
-
             GetFirstPostId(session_name) { it ->
 
                 if (it.code == 0) {

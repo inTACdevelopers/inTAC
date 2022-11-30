@@ -51,7 +51,7 @@ class Registration_page2 : AppCompatActivity() {
                 Log.d("TestReg", "Success")
 
                 val SignUpResponse = SingUp(user.login, user.pass)
-
+                println(SignUpResponse.state)
                 val intent = Intent(this@Registration_page2, Feed::class.java)
                 intent.putExtra("id", SignUpResponse.id)
                 startActivity(intent)
