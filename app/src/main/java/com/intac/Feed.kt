@@ -40,15 +40,17 @@ class Feed : AppCompatActivity() {
         supportActionBar?.hide()
         user_id = intent.getLongExtra("id",-1)
 
+
         super.onCreate(savedInstanceState)
         binding = FeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvPost.visibility = View.GONE
-
-        binding.navView.setOnNavigationItemSelectedListener()
-        {
-            when (it.itemId) {
+        with(binding) {
+            val color = Color.parseColor("#0043BE");
+            pbLoader.indeterminateDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            navView.setOnNavigationItemSelectedListener()
+            {
+                when (it.itemId) {
                 R.id.navigation_feed -> {}
                 R.id.navigation_search -> {
                     val intent = Intent(this@Feed, Search::class.java)
@@ -71,23 +73,13 @@ class Feed : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
-            true
-        }
+                true
+            }
 
-
-
-
-        with(binding) {
-            val color = Color.parseColor("#0043BE");
-            pbLoader.indeterminateDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            rvPost.visibility = View.GONE
         }
 
         init()
-
-        //TODO
-        // проверить, что штука с удалением сессий работает
-        // потому что сейчас не могу гонять по разным активити :(
-        // т.к переходы между ними прогает Ваня
 
         CreateSession(user_id.toInt()){
             session_name = it.sessionName
@@ -108,10 +100,8 @@ class Feed : AppCompatActivity() {
 
                         val runnable = Runnable {
 
-                            val paginate: Long = 2
-
                             val response =
-                                getPostPaginatedSync(curr_post_weight, paginate, session_name)
+                                getPostPaginatedSync(curr_post_weight, mainPaginationLimit, session_name)
 
                             curr_post_weight = if (response.postsList[0].code == 3) {
                                 start_post_weight
@@ -152,6 +142,7 @@ class Feed : AppCompatActivity() {
                 val visibleItemCount =
                     (recyclerView.layoutManager as LinearLayoutManager).childCount
                 val totalItemCount = (recyclerView.layoutManager as LinearLayoutManager).itemCount
+
                 val firstVisibleItems =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
@@ -169,18 +160,10 @@ class Feed : AppCompatActivity() {
         super.onStop()
     }
 
-    private fun goToCreatePost() {
-        Log.d("TestSenderToPostCreate", "Sent to Post Creation")
-        val id = intent.extras?.getLong("id")
-
-        val intent = Intent(this@Feed, CreatePost::class.java)
-        intent.putExtra("id", id)
-        startActivity(intent)
-    }
 
     private fun init() {
         recyclerView = binding.rvPost
-        adapter = PostAdapter()
+        adapter = PostAdapter(user_id);
         recyclerView.adapter = adapter
     }
 

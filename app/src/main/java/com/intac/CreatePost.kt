@@ -61,14 +61,13 @@ class CreatePost : AppCompatActivity() {
             if (PostName != "" && PostDescription != "" && PostContacts != "") {
                 val check: Int = choosedPhotoBitmap.width
 
-                val post: Post = Post(
+                val post  = Post(
                     title = PostName,
                     description = PostDescription,
                     sellerContact = PostContacts,
                     photoBitmap = choosedPhotoBitmap,
                     from_user = id
                 )
-
                 val makePostResponse = makePost(post)
 
                 if (makePostResponse.state == "OK") {
@@ -87,7 +86,7 @@ class CreatePost : AppCompatActivity() {
     }
 
     private fun appBack() {
-        val id = intent.extras?.getInt("id")
+        val id = intent.extras?.getLong("id")
 
         val intent = Intent(this@CreatePost, Feed::class.java)
         intent.putExtra("id", id)

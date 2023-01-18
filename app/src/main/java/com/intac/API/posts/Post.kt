@@ -18,7 +18,7 @@ import java.io.InputStream
 import kotlin.concurrent.thread
 
 class Post(
-    var id: Int = 0,
+    var id: Long = 0,
     var title: String,
     var description: String,
     var sellerContact: String,
@@ -26,11 +26,71 @@ class Post(
     var from_user: Long,
     var creation_time: String = "",
     var likes: Long = 0,
+    var was_like: Int = 0,
 
     var weight: Double = 0.0
 ) {
-    //Весовая функция для поста, посты сортируются по своему весу
+    fun Like(userId: Long, callback: (PostMakerProto.LikePostResponse) -> Unit) {
+        var response: PostMakerProto.LikePostResponse
 
+        thread {
+            var host: String = conf.HOST
+            var port: Int = conf.PORT
+
+            if (conf.DEBAG) {
+                host = conf.DEBAG_HOST
+                port = conf.DEBAG_PORT
+
+            }
+            println(host)
+            val channel =
+                OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+            val client = LikePostGrpc.newBlockingStub(channel)
+
+            val request =
+                PostMakerProto.LikePostRequest.newBuilder().setPostId(this.id).setFromUser(userId)
+                    .build()
+
+            response = client.sendLike(request)
+
+            Handler(Looper.getMainLooper()).post {
+                callback.invoke(response)
+            }
+
+        }
+    }
+
+    fun UnLike(userId: Long, callback: (PostMakerProto.UnLikePostResponse) -> Unit) {
+        var response: PostMakerProto.UnLikePostResponse
+
+        thread {
+            var host: String = conf.HOST
+            var port: Int = conf.PORT
+
+            if (conf.DEBAG) {
+                host = conf.DEBAG_HOST
+                port = conf.DEBAG_PORT
+
+            }
+            println(host)
+            val channel =
+                OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+            val client = LikePostGrpc.newBlockingStub(channel)
+
+            val request =
+                PostMakerProto.UnLikePostRequest.newBuilder().setPostId(this.id).setFromUser(userId)
+                    .build()
+
+            response = client.unLike(request)
+
+            Handler(Looper.getMainLooper()).post {
+                callback.invoke(response)
+            }
+
+        }
+    }
 }
 
 fun makePost(post: Post): PostMakerProto.makePostResponse {
@@ -137,7 +197,7 @@ fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
 fun getPostPaginated(
     weight: Double,
     limit: Long,
-    session_name:String,
+    session_name: String,
     callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
 ) {
     var response: PostMakerProto.GetPostPaginatedResponse
@@ -157,7 +217,8 @@ fun getPostPaginated(
         val client = postGetterGrpc.newBlockingStub(channel)
 
         val request =
-            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight).setSessionName(session_name).setLimit(limit).build()
+            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight)
+                .setSessionName(session_name).setLimit(limit).build()
         response = client.getPostPaginated(request)
         channel.shutdownNow()
 
@@ -173,9 +234,9 @@ fun getPostPaginated(
 fun getPostPaginatedSync(
     weight: Double,
     limit: Long,
-    session_name:String,
+    session_name: String,
 
-): PostMakerProto.GetPostPaginatedResponse {
+    ): PostMakerProto.GetPostPaginatedResponse {
 
     var response: PostMakerProto.GetPostPaginatedResponse =
         PostMakerProto.GetPostPaginatedResponse.getDefaultInstance()
@@ -196,7 +257,8 @@ fun getPostPaginatedSync(
     val client = postGetterGrpc.newBlockingStub(channel)
 
     val request =
-        PostMakerProto.GetPostRequest.newBuilder().setSessionName(session_name).setWeight(weight).setLimit(limit).build()
+        PostMakerProto.GetPostRequest.newBuilder().setSessionName(session_name).setWeight(weight)
+            .setLimit(limit).build()
     response = client.getPostPaginated(request)
     channel.shutdownNow()
 
@@ -208,7 +270,10 @@ fun getPostPaginatedSync(
 
 }
 
-fun GetFirstPostId(session_name:String, callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit) {
+fun GetFirstPostId(
+    session_name: String,
+    callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit
+) {
     var response: PostMakerProto.GetFirstPostIdResponse
 
 
@@ -226,7 +291,8 @@ fun GetFirstPostId(session_name:String, callback: (PostMakerProto.GetFirstPostId
 
         val client = postGetterGrpc.newBlockingStub(channel)
 
-        val request = PostMakerProto.GetFirstPostIdRequest.newBuilder().setSessionName(session_name).build()
+        val request =
+            PostMakerProto.GetFirstPostIdRequest.newBuilder().setSessionName(session_name).build()
         response = client.getFirstPostId(request)
         channel.shutdownNow()
 
@@ -252,7 +318,7 @@ fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResp
 
     for (item in response.postsList) {
         val post = Post(
-            item.postId, item.postTitle, item.postDescription, item.sellerContact,
+            item.postId.toLong(), item.postTitle, item.postDescription, item.sellerContact,
             PhotoDecoder(item.photoBytes), item.userId, item.creationTime
         )
         post.weight = item.weight
@@ -263,34 +329,6 @@ fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResp
 }
 
 
-fun LikePost(postId: Long, userId: Long, callback: (PostMakerProto.LikePostResponse) -> Unit) {
-    var response: PostMakerProto.LikePostResponse
 
-    thread {
-        var host: String = conf.HOST
-        var port: Int = conf.PORT
 
-        if (conf.DEBAG) {
-            host = conf.DEBAG_HOST
-            port = conf.DEBAG_PORT
-
-        }
-        println(host)
-        val channel =
-            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
-
-        val client = LikePostGrpc.newBlockingStub(channel)
-
-        val request =
-            PostMakerProto.LikePostRequest.newBuilder().setPostId(postId).setFromUser(userId)
-                .build()
-
-        response = client.sendLike(request)
-
-        Handler(Looper.getMainLooper()).post {
-            callback.invoke(response)
-        }
-
-    }
-}
 

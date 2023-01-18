@@ -178,11 +178,7 @@ fun SingUpByToken(token: com.google.protobuf.ByteString, callback: (AuthorizerPr
 }
 
 fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionResponse) -> Unit) {
-    //TODO
-    // Вызвать функцию Ильи (та что с файлами)
-    // Здесь создание файла и его шифрация
-    // if (session.Exists()) -> do my code
-    // else -> dont do my code
+
 
     var response: SessionServiceProto.CreatePostSessionResponse
 
@@ -195,7 +191,6 @@ fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionR
             port = conf.DEBAG_PORT
 
         }
-        println(host)
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
@@ -221,9 +216,7 @@ fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionR
 
 
 fun DropSessionSync(session_name: String) {
-    //TODO
-    // Вызвать функцию Ильи (та что с файлами)
-    // Но здесь про удаление
+
 
     var response: SessionServiceProto.DropSessionResponse
 
@@ -236,7 +229,6 @@ fun DropSessionSync(session_name: String) {
             port = conf.DEBAG_PORT
 
         }
-        println(host)
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
