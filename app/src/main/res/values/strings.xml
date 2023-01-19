@@ -56,4 +56,13 @@
     <string name="textChangePassword">Изменить пароль</string>
     <string name="editDescriptionBusiness">О компании</string>
     <string name="editNameBusiness">Название компании</string>
+    <string name="username">Имя пользователя</string>
+    <string name="numPost">100</string>
+    <string name="textPost">Публикации</string>
+    <string name="text_login">Логин</string>
+    <string name="text_describtion_acc">Описание, какие мы классные!</string>
+    <string name="textSubscribers">Подписчики</string>
+    <string name="textSubscribtons">Подписки</string>
+    <string name="numSubscribers">100</string>
+    <string name="numSubscribtions">100</string>
 </resources>

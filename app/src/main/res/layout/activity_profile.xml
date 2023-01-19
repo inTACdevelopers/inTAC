@@ -4,40 +4,271 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
     tools:context=".Profile">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProfile"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ToggleButton
+        android:id="@+id/btSubscribe"
+        android:layout_width="131dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btsubscribe_selector"
+        android:scaleType=""
+        android:textOff=""
+        android:textOn=""
         android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:spanCount="3"
-        tools:itemCount="6"
-        tools:listitem="@layout/profile_post" >
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
+    <ImageButton
+        android:id="@+id/btSearch"
+        android:layout_width="68dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="#00000000"
+        android:scaleType=""
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:srcCompat="@drawable/search_bt" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <ImageButton
+        android:id="@+id/btMessage"
+        android:layout_width="131dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="7dp"
+        android:background="#00000000"
+        android:scaleType=""
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/btSearch"
+        app:layout_constraintStart_toEndOf="@+id/btSubscribe"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:srcCompat="@drawable/messanges_bt" />
 
-    <ProgressBar
-        android:id="@+id/pbLoader"
-        style="?android:attr/progressBarStyle"
+    <TextView
+        android:id="@+id/textSubscribtions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/textSubscribtons"
+        android:textColor="#000000"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textSubscribers"
+        app:layout_constraintTop_toBottomOf="@+id/numSubscribtions" />
+
+    <TextView
+        android:id="@+id/numSubscribtions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/numSubscribtions"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLogin" />
+
+    <TextView
+        android:id="@+id/numSubscribers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="51dp"
+        android:text="@string/numSubscribers"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/numSubscribtions"
+        app:layout_constraintTop_toBottomOf="@+id/textLogin" />
+
+    <TextView
+        android:id="@+id/textSubscribers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="6dp"
+        android:text="@string/textSubscribers"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/textSubscribtions"
+        app:layout_constraintStart_toEndOf="@+id/textPost"
+        app:layout_constraintTop_toBottomOf="@+id/numSubscribers" />
+
+    <ImageButton
+        android:id="@+id/btBack_edit_profile"
+        android:layout_width="54dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginBottom="28dp"
+        android:background="#00000000"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_left" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="97dp"
+        android:background="@drawable/avatar_bordershape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:cardCornerRadius="50dp">
+
+            <ImageView
+                android:id="@+id/avatar_edit"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="61dp"
+        android:layout_marginEnd="118dp"
+        android:text="@string/text_login"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btBack_edit_profile"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/numPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="57dp"
+        android:text="@string/numPost"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/numSubscribers"
+        app:layout_constraintTop_toBottomOf="@+id/textLogin" />
 
+    <TextView
+        android:id="@+id/textPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="7dp"
+        android:text="@string/textPost"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/textSubscribers"
+        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
+        app:layout_constraintTop_toBottomOf="@+id/numPost" />
 
+    <TextView
+        android:id="@+id/textusername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/username"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <TextView
+        android:id="@+id/textdescribtion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="3dp"
+        android:text="@string/text_describtion_acc"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textusername" />
+
+    <ImageButton
+        android:id="@+id/btGrid"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="87dp"
+        android:layout_marginTop="8dp"
+        android:background="#00000000"
+        android:scaleType=""
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textdescribtion"
+        app:srcCompat="@drawable/grid_icon" />
+
+    <ImageButton
+        android:id="@+id/btMail"
+        android:layout_width="38dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="78dp"
+        android:background="#00000000"
+        android:scaleType=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textdescribtion"
+        app:srcCompat="@drawable/mail_icon" />
+
+    <ImageButton
+        android:id="@+id/btGoods"
+        android:layout_width="42dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="79dp"
+        android:background="#00000000"
+        android:scaleType=""
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/btMail"
+        app:layout_constraintStart_toEndOf="@+id/btGrid"
+        app:layout_constraintTop_toBottomOf="@+id/textdescribtion"
+        app:srcCompat="@drawable/goods_icon" />
+
+    <ImageButton
+        android:id="@+id/btProfileEdit"
+        android:layout_width="269dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="7dp"
+        android:background="#00000000"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/btSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:srcCompat="@drawable/profile_edit_bt" />
+
+    <ImageButton
+        android:id="@+id/btYandexMarket"
+        android:layout_width="71dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="7dp"
+        android:background="#00000000"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/btSearch"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:srcCompat="@drawable/yandexmarket_bt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
