@@ -23,10 +23,10 @@ class Profile : AppCompatActivity() {
     var PostsThread: Thread = Thread()
     var tmpList: ArrayList<Post> = ArrayList<Post>()
 
-    var mainPaginationLimit: Long = 3
+    var mainPaginationLimit: Long = 6
     var firstPaginationLimit: Long = 3
 
-    var curr_post_id: Long = 0;
+    var curr_post_id: Long = 0
 
     private fun init() {
         recyclerView = binding.rvProfile
@@ -43,12 +43,7 @@ class Profile : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-        binding.pbLoader.visibility = View.GONE
-
         init()
-
 
         GetUserPosts(user_id, mainPaginationLimit, curr_post_id) { it ->
             if (it.postsList.size != 0) {
@@ -60,30 +55,30 @@ class Profile : AppCompatActivity() {
                     curr_post_id = it.postsList[it.postsList.size - 1].postId.toLong()
 
 
-                    val runnable = Runnable {
-
-                        val response = GetUserPostsSync(user_id, mainPaginationLimit, curr_post_id)
-                        Log.d("TAAAAAAAAAAAAGGGGGG",response.postsList[0].postId.toLong().toString())
-                        curr_post_id = if (response.postsList[0].code == 3) {
-                            //Значит посты закончились
-                            curr_post_id
-                        } else {
-                            response.postsList[response.postsList.size - 1].postId.toLong()
-
-                        }
-
-                        if (response.postsList[0].code != 3) {
-                            tmpList = makeListFromPaginationResponse((response))
-                        }else
-                            tmpList = ArrayList()
-
-                    }
-                    if (!PostsThread.isAlive) {
-                        PostsThread = Thread(runnable)
-                        PostsThread.start()
-
-                        adapter.concatLists(tmpList)
-                    }
+//                    val runnable = Runnable {
+//
+//                        val response = GetUserPostsSync(user_id, mainPaginationLimit, curr_post_id)
+//                        Log.d("TAAAAAAAAAAAAGGGGGG",response.postsList[response.postsList.size - 1].postId.toLong().toString())
+//                        curr_post_id = if (response.postsList[0].code == 3) {
+//                            //Значит посты закончились
+//                            curr_post_id
+//                        } else {
+//                            response.postsList[response.postsList.size - 1].postId.toLong()
+//
+//                        }
+//
+//                        if (response.postsList[0].code != 3) {
+//                            tmpList = makeListFromPaginationResponse((response))
+//                        }else
+//                            tmpList = ArrayList()
+//
+//                    }
+//                    if (!PostsThread.isAlive) {
+//                        PostsThread = Thread(runnable)
+//                        PostsThread.start()
+//
+//                        adapter.concatLists(tmpList)
+//                    }
                 } else {
                     //TODO
                     // Server Error

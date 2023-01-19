@@ -81,6 +81,40 @@ class Feed : AppCompatActivity() {
 
         init()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+
+                super.onScrollStateChanged(recyclerView, newState)
+
+                val visibleItemCount =
+                    (recyclerView.layoutManager as LinearLayoutManager).childCount
+                val totalItemCount = (recyclerView.layoutManager as LinearLayoutManager).itemCount
+
+                val firstVisibleItems =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+
+                if (visibleItemCount + firstVisibleItems >= totalItemCount - 10) {
+                    if (totalItemCount != 0) {
+                        UpdateFeed()
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onStop() {
+        DropSessionSync(session_name)
+        super.onStop()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
         CreateSession(user_id.toInt()){
             session_name = it.sessionName
             GetFirstPostId(session_name) { it ->
@@ -128,38 +162,7 @@ class Feed : AppCompatActivity() {
                 }
             }
         }
-
     }
-
-    override fun onResume() {
-        super.onResume()
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-
-                super.onScrollStateChanged(recyclerView, newState)
-
-                val visibleItemCount =
-                    (recyclerView.layoutManager as LinearLayoutManager).childCount
-                val totalItemCount = (recyclerView.layoutManager as LinearLayoutManager).itemCount
-
-                val firstVisibleItems =
-                    (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-
-                if (visibleItemCount + firstVisibleItems >= totalItemCount - 10) {
-                    if (totalItemCount != 0) {
-                        UpdateFeed()
-                    }
-                }
-            }
-        })
-    }
-
-    override fun onStop() {
-        DropSessionSync(session_name)
-        super.onStop()
-    }
-
 
     private fun init() {
         recyclerView = binding.rvPost
