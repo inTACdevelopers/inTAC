@@ -41,7 +41,7 @@ class PostAdapter(var user_id: Long) : RecyclerView.Adapter<PostAdapter.PostHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.post, parent, false)
-        return PostHolder(view, user_id);
+        return PostHolder(view, user_id)
     }
 
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
@@ -53,18 +53,9 @@ class PostAdapter(var user_id: Long) : RecyclerView.Adapter<PostAdapter.PostHold
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addPost(post: Post) {
-        postList.add(post)
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
     fun concatLists(list: ArrayList<Post>) {
         postList += list
         notifyDataSetChanged()
     }
 
-    fun getList(): ArrayList<Post> {
-        return postList
-    }
 }
