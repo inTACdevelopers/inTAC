@@ -195,7 +195,7 @@ fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
 }
 
 fun getPostPaginated(
-    weight: Double,
+    post_id: Long,
     limit: Long,
     session_name: String,
     callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
@@ -217,7 +217,7 @@ fun getPostPaginated(
         val client = postGetterGrpc.newBlockingStub(channel)
 
         val request =
-            PostMakerProto.GetPostRequest.newBuilder().setWeight(weight)
+            PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id)
                 .setSessionName(session_name).setLimit(limit).build()
         response = client.getPostPaginated(request)
         channel.shutdownNow()
@@ -232,7 +232,7 @@ fun getPostPaginated(
 }
 
 fun getPostPaginatedSync(
-    weight: Double,
+    post_id: Long,
     limit: Long,
     session_name: String,
 
@@ -257,7 +257,7 @@ fun getPostPaginatedSync(
     val client = postGetterGrpc.newBlockingStub(channel)
 
     val request =
-        PostMakerProto.GetPostRequest.newBuilder().setSessionName(session_name).setWeight(weight)
+        PostMakerProto.GetPostRequest.newBuilder().setSessionName(session_name).setPostId(post_id)
             .setLimit(limit).build()
     response = client.getPostPaginated(request)
     channel.shutdownNow()
@@ -321,7 +321,7 @@ fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResp
             item.postId.toLong(), item.postTitle, item.postDescription, item.sellerContact,
             PhotoDecoder(item.photoBytes), item.userId, item.creationTime
         )
-        post.weight = item.weight
+
         out_list.add(post)
     }
     return out_list

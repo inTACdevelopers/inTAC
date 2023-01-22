@@ -4,11 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/drawable/btforme_selector.xml" value="0.1705" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/activity_edit_business_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/activity_edit_personal_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/activity_profile.xml" value="0.33" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/activity_search.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/feed.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/feeditem.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/fragment_nav.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/fragment_nav2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/post.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/layout/profile_post.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/drawable/choose_side_btn.xml" value="0.269" />
         <entry key="..\:/Users/Alex/Desktop/InTac.development/inTAC/app/src/main/res/drawable/test.xml" value="0.269" />
@@ -23,7 +28,6 @@
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/btforme_selector.xml" value="0.2085" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/btfrome_selector.xml" value="0.146" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/btlike_selector.xml" value="0.215" />
-        <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/btsubscribe_selector.xml" value="0.263" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/choose_side.xml" value="0.1" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/choose_side_btn.xml" value="0.1" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/drawable/circle_for_soc.xml" value="0.2005" />
@@ -33,7 +37,7 @@
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_edit_business_profile.xml" value="0.4" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_edit_personal_profile.xml" value="0.264" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_profile.xml" value="0.25" />
+        <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_profile.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_reactions.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_registration.xml" value="0.4" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/activity_registration_page2.xml" value="0.27447916666666666" />
@@ -43,7 +47,6 @@
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/fragment_nav.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/fragment_nav2.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/post.xml" value="0.4" />
-        <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/layout/profile_post.xml" value="0.3458333333333333" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/menu/bottom_nav_menu.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/ivand/AndroidStudioProjects/inTAC/app/src/main/res/menu/navigation.xml" value="0.284375" />
       </map>
