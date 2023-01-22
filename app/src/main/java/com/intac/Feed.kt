@@ -119,45 +119,49 @@ class Feed : AppCompatActivity() {
 
 
             if (it.code == 0) {
-                getPostPaginated(curr_post_id, firstPaginationLimit, session_name) {
-                    adapter.concatLists(makeListFromPaginationResponse(it))
-
-                    binding.rvPost.visibility = View.VISIBLE
-                    binding.pbLoader.visibility = View.GONE
-
-                    curr_post_id += mainPaginationLimit
+                getPostPaginated(curr_post_id, firstPaginationLimit, session_name,user_id) { it ->
+                    if(it.postsList != null && it.postsList[0].code==0) {
 
 
-                    val runnable = Runnable {
+                        adapter.concatLists(makeListFromPaginationResponse(it))
 
-                        val response =
-                            getPostPaginatedSync(
-                                curr_post_id,
-                                mainPaginationLimit,
-                                session_name
-                            )
+                        binding.rvPost.visibility = View.VISIBLE
+                        binding.pbLoader.visibility = View.GONE
 
-                        curr_post_id = if (response.postsList[0].code == 3) {
-                            start_post_id
+                        curr_post_id += mainPaginationLimit
 
-                        } else {
-                            curr_post_id + mainPaginationLimit
 
+                        val runnable = Runnable {
+
+                            val response =
+                                getPostPaginatedSync(
+                                    curr_post_id,
+                                    mainPaginationLimit,
+                                    session_name,
+                                    user_id
+                                )
+
+                            curr_post_id = if (response.postsList[0].code == 3) {
+                                start_post_id
+
+                            } else {
+                                curr_post_id + mainPaginationLimit
+
+                            }
+
+                            if (response.postsList[0].code != 3)
+                                tmpList = makeListFromPaginationResponse((response))
+                            else
+                                tmpList = ArrayList()
+                        }
+                        if (!PostsThread.isAlive) {
+                            PostsThread = Thread(runnable)
+                            PostsThread.start()
+
+                            adapter.concatLists(tmpList)
                         }
 
-                        if(response.postsList[0].code != 3)
-                            tmpList = makeListFromPaginationResponse((response))
-                        else
-                            tmpList = ArrayList()
                     }
-                    if (!PostsThread.isAlive) {
-                        PostsThread = Thread(runnable)
-                        PostsThread.start()
-
-                        adapter.concatLists(tmpList)
-                    }
-
-
                 }
             } else {
                 //TODO
@@ -176,7 +180,7 @@ class Feed : AppCompatActivity() {
     private fun UpdateFeed() {
         val runnable = Runnable {
 
-            val response = getPostPaginatedSync(curr_post_id, mainPaginationLimit, session_name)
+            val response = getPostPaginatedSync(curr_post_id, mainPaginationLimit, session_name,user_id)
 
             curr_post_id = if (response.postsList[0].code == 3) {
                 start_post_id
@@ -185,7 +189,7 @@ class Feed : AppCompatActivity() {
                 curr_post_id + mainPaginationLimit
 
             }
-            if(response.postsList[0].code != 3)
+            if (response.postsList[0].code != 3)
                 tmpList = makeListFromPaginationResponse((response))
             else
                 tmpList = ArrayList()

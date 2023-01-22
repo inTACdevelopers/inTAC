@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.intac.makeposts.PostMakerProto
 import com.intac.makeposts.postGetterGrpc
 import com.intac.makeposts.postMakerGrpc
@@ -27,6 +28,7 @@ class Post(
     var creation_time: String = "",
     var likes: Long = 0,
     var was_like: Int = 0,
+    var like: Boolean = false,
 
     var weight: Double = 0.0
 ) {
@@ -198,6 +200,7 @@ fun getPostPaginated(
     post_id: Long,
     limit: Long,
     session_name: String,
+    user_id: Long,
     callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
 ) {
     var response: PostMakerProto.GetPostPaginatedResponse
@@ -218,7 +221,7 @@ fun getPostPaginated(
 
         val request =
             PostMakerProto.GetPostRequest.newBuilder().setPostId(post_id)
-                .setSessionName(session_name).setLimit(limit).build()
+                .setSessionName(session_name).setLimit(limit).setUserId(user_id).build()
         response = client.getPostPaginated(request)
         channel.shutdownNow()
 
@@ -235,11 +238,10 @@ fun getPostPaginatedSync(
     post_id: Long,
     limit: Long,
     session_name: String,
+    user_id: Long
+): PostMakerProto.GetPostPaginatedResponse {
 
-    ): PostMakerProto.GetPostPaginatedResponse {
-
-    var response: PostMakerProto.GetPostPaginatedResponse =
-        PostMakerProto.GetPostPaginatedResponse.getDefaultInstance()
+    val response: PostMakerProto.GetPostPaginatedResponse
 
 
     var host: String = conf.HOST
@@ -257,7 +259,8 @@ fun getPostPaginatedSync(
     val client = postGetterGrpc.newBlockingStub(channel)
 
     val request =
-        PostMakerProto.GetPostRequest.newBuilder().setSessionName(session_name).setPostId(post_id)
+        PostMakerProto.GetPostRequest.newBuilder().setSessionName(session_name).setUserId(user_id)
+            .setPostId(post_id)
             .setLimit(limit).build()
     response = client.getPostPaginated(request)
     channel.shutdownNow()
@@ -270,42 +273,6 @@ fun getPostPaginatedSync(
 
 }
 
-fun GetFirstPostId(
-    session_name: String,
-    callback: (PostMakerProto.GetFirstPostIdResponse) -> Unit
-) {
-    var response: PostMakerProto.GetFirstPostIdResponse
-
-
-    thread {
-        var host: String = conf.HOST
-        var port: Int = conf.PORT
-
-        if (conf.DEBAG) {
-            host = conf.DEBAG_HOST
-            port = conf.DEBAG_PORT
-
-        }
-        val channel =
-            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
-
-        val client = postGetterGrpc.newBlockingStub(channel)
-
-        val request =
-            PostMakerProto.GetFirstPostIdRequest.newBuilder().setSessionName(session_name).build()
-        response = client.getFirstPostId(request)
-        channel.shutdownNow()
-
-
-        Handler(Looper.getMainLooper()).post {
-
-            callback.invoke(response)
-        }
-
-    }
-
-
-}
 
 fun PhotoDecoder(bytes: ByteString?): Bitmap {
     val stream: InputStream = ByteArrayInputStream(bytes!!.toByteArray())
@@ -321,7 +288,7 @@ fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResp
             item.postId.toLong(), item.postTitle, item.postDescription, item.sellerContact,
             PhotoDecoder(item.photoBytes), item.userId, item.creationTime
         )
-
+        post.like = item.like
         out_list.add(post)
     }
     return out_list

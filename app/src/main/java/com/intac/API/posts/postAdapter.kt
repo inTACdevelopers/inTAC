@@ -23,7 +23,12 @@ class PostAdapter(var user_id: Long) : RecyclerView.Adapter<PostAdapter.PostHold
             tvDescription.text = post.description;
             imagePost.setImageBitmap(post.photoBitmap)
 
-            btLike.setOnClickListener() {
+            if(post.like){
+                btLike.isChecked = true
+                post.was_like = 1
+            }
+
+            btLike.setOnClickListener {
                 if (post.was_like == 0) {
                     post.Like(user_id) {
                         post.was_like = 1
