@@ -3,6 +3,5 @@
     <item android:drawable="@drawable/btforbusiness_on"
         android:state_checked="true" />
     <item android:drawable="@drawable/btforbusiness_off"
-        android:state_checked="false"
-        />
+        android:state_checked="false" />
 </selector>

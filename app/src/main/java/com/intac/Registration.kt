@@ -21,13 +21,25 @@ class Registration : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btForMe.setOnCheckedChangeListener { _, isChecked ->
-            binding.btForBusiness.setChecked(false)
-            binding.plainCompanyName.setVisibility(View.GONE)
+            if (isChecked) {
+                binding.btForBusiness.setChecked(false)
+
+                binding.btForMe.isClickable = false
+                binding.btForBusiness.isClickable = true
+
+                binding.plainCompanyName.setVisibility(View.GONE)
+            }
         }
 
         binding.btForBusiness.setOnCheckedChangeListener { _, isChecked ->
-            binding.btForMe.setChecked(false)
-            binding.plainCompanyName.setVisibility(View.VISIBLE)
+            if (isChecked) {
+                binding.btForMe.setChecked(false)
+
+                binding.btForBusiness.isClickable = false
+                binding.btForMe.isClickable = true
+
+                binding.plainCompanyName.setVisibility(View.VISIBLE)
+            }
         }
 
         binding.btContinue.setOnClickListener(){

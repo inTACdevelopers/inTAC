@@ -87,6 +87,10 @@ class Profile : AppCompatActivity() {
             }
         }
 
+        binding.btBackEditProfile.setOnClickListener() {
+            appBack()
+        }
+
     }
 
     override fun onResume() {
@@ -115,8 +119,6 @@ class Profile : AppCompatActivity() {
 
     private fun UpdateProfile() {
         val runnable = Runnable {
-
-
             val response = GetUserPostsSync(user_id, mainPaginationLimit, curr_post_id)
 
             curr_post_id = if (response.postsList[0].code == 3) {
@@ -133,12 +135,18 @@ class Profile : AppCompatActivity() {
                 }else
                     tmpList = ArrayList()
         }
+
         if (!PostsThread.isAlive) {
             PostsThread = Thread(runnable)
             PostsThread.start()
 
             adapter.concatLists(tmpList)
         }
+    }
+
+    private fun appBack() {
+        val intent = Intent(this@Profile, Feed::class.java)
+        startActivity(intent)
     }
 
 }
