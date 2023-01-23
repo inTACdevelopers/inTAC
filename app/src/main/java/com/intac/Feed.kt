@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,8 +25,8 @@ class Feed : AppCompatActivity() {
     lateinit var session_name: String
     var user_id: Long = -1
 
-    var curr_post_weight: Double = 0.0
-    var start_post_weight: Double = 0.0
+    var curr_post_id: Long = 0
+    var start_post_id: Long = 0
 
     var PostsThread: Thread = Thread()
     var tmpList: ArrayList<Post> = ArrayList<Post>()
@@ -38,7 +37,7 @@ class Feed : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
-        user_id = intent.getLongExtra("id",-1)
+        user_id = intent.getLongExtra("id", -1)
 
 
         super.onCreate(savedInstanceState)
@@ -51,28 +50,28 @@ class Feed : AppCompatActivity() {
             navView.setOnNavigationItemSelectedListener()
             {
                 when (it.itemId) {
-                R.id.navigation_feed -> {}
-                R.id.navigation_search -> {
-                    val intent = Intent(this@Feed, Search::class.java)
-                    intent.putExtra("id", user_id)
-                    startActivity(intent)
+                    R.id.navigation_feed -> {}
+                    R.id.navigation_search -> {
+                        val intent = Intent(this@Feed, Search::class.java)
+                        intent.putExtra("id", user_id)
+                        startActivity(intent)
+                    }
+                    R.id.navigation_addPost -> {
+                        val intent = Intent(this@Feed, CreatePost::class.java)
+                        intent.putExtra("id", user_id)
+                        startActivity(intent)
+                    }
+                    R.id.navigation_reactions -> {
+                        val intent = Intent(this@Feed, Reactions::class.java)
+                        intent.putExtra("id", user_id)
+                        startActivity(intent)
+                    }
+                    R.id.navigation_profile -> {
+                        val intent = Intent(this@Feed, Profile::class.java)
+                        intent.putExtra("id", user_id)
+                        startActivity(intent)
+                    }
                 }
-                R.id.navigation_addPost -> {
-                    val intent = Intent(this@Feed, CreatePost::class.java)
-                    intent.putExtra("id", user_id)
-                    startActivity(intent)
-                }
-                R.id.navigation_reactions -> {
-                    val intent = Intent(this@Feed, Reactions::class.java)
-                    intent.putExtra("id", user_id)
-                    startActivity(intent)
-                }
-                R.id.navigation_profile -> {
-                    val intent = Intent(this@Feed, Profile::class.java)
-                    intent.putExtra("id", user_id)
-                    startActivity(intent)
-                }
-            }
                 true
             }
 
@@ -115,37 +114,45 @@ class Feed : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        CreateSession(user_id.toInt()){
+        CreateSession(user_id.toInt()) {
             session_name = it.sessionName
-            GetFirstPostId(session_name) { it ->
 
-                if (it.code == 0) {
-                    curr_post_weight = it.weight
-                    start_post_weight = it.weight
 
-                    getPostPaginated(it.weight, firstPaginationLimit, session_name) {
+            if (it.code == 0) {
+                getPostPaginated(curr_post_id, firstPaginationLimit, session_name,user_id) { it ->
+                    if(it.postsList != null && it.postsList[0].code==0) {
+
+
                         adapter.concatLists(makeListFromPaginationResponse(it))
 
                         binding.rvPost.visibility = View.VISIBLE
                         binding.pbLoader.visibility = View.GONE
 
-                        curr_post_weight = it.postsList[it.postsList.size - 1].weight
+                        curr_post_id += mainPaginationLimit
 
 
                         val runnable = Runnable {
 
                             val response =
-                                getPostPaginatedSync(curr_post_weight, mainPaginationLimit, session_name)
+                                getPostPaginatedSync(
+                                    curr_post_id,
+                                    mainPaginationLimit,
+                                    session_name,
+                                    user_id
+                                )
 
-                            curr_post_weight = if (response.postsList[0].code == 3) {
-                                start_post_weight
+                            curr_post_id = if (response.postsList[0].code == 3) {
+                                start_post_id
 
                             } else {
-                                response.postsList[response.postsList.size - 1].weight
+                                curr_post_id + mainPaginationLimit
 
                             }
 
-                            tmpList = makeListFromPaginationResponse((response))
+                            if (response.postsList[0].code != 3)
+                                tmpList = makeListFromPaginationResponse((response))
+                            else
+                                tmpList = ArrayList()
                         }
                         if (!PostsThread.isAlive) {
                             PostsThread = Thread(runnable)
@@ -154,13 +161,13 @@ class Feed : AppCompatActivity() {
                             adapter.concatLists(tmpList)
                         }
 
-
                     }
-                } else {
-                    //TODO
-                    //Обработать ошибку сервера
                 }
+            } else {
+                //TODO
+                //Обработать ошибку сервера
             }
+
         }
     }
 
@@ -173,18 +180,19 @@ class Feed : AppCompatActivity() {
     private fun UpdateFeed() {
         val runnable = Runnable {
 
+            val response = getPostPaginatedSync(curr_post_id, mainPaginationLimit, session_name,user_id)
 
-            val response = getPostPaginatedSync(curr_post_weight, mainPaginationLimit, session_name)
-
-            curr_post_weight = if (response.postsList[0].code == 3) {
-                start_post_weight
+            curr_post_id = if (response.postsList[0].code == 3) {
+                start_post_id
 
             } else {
-                response.postsList[response.postsList.size - 1].weight
+                curr_post_id + mainPaginationLimit
 
             }
-
-            tmpList = makeListFromPaginationResponse((response))
+            if (response.postsList[0].code != 3)
+                tmpList = makeListFromPaginationResponse((response))
+            else
+                tmpList = ArrayList()
         }
         if (!PostsThread.isAlive) {
             PostsThread = Thread(runnable)
