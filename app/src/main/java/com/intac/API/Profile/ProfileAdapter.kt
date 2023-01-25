@@ -1,10 +1,11 @@
-package com.intac.API.posts
+package com.intac.API.Profile
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.intac.API.posts.Post
 import com.intac.R
 import com.intac.databinding.ProfilePostBinding
 
@@ -19,7 +20,8 @@ class ProfileAdapter() : RecyclerView.Adapter<ProfileAdapter.ProfilePostHolder>(
         fun bind(post: Post) = with(binding) {
             imagePost.setImageBitmap(post.photoBitmap)
 
-            imagePost.setOnClickListener(){
+            imagePost.setOnClickListener{
+
                 //TODO
                 // Добавь сюда действие по переходу на ленту (вертикальную, а не горизонтальную)
             }

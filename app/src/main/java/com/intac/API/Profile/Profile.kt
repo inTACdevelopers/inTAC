@@ -1,4 +1,4 @@
-package com.intac.API.posts
+package com.intac.API.Profile
 
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +7,9 @@ import com.intac.makeposts.PostMakerProto
 import com.intac.makeposts.postGetterGrpc
 import io.grpc.okhttp.OkHttpChannelBuilder
 import kotlin.concurrent.thread
+import com.intac.profile.ProfileProto
+import com.intac.profile.userGetterGrpc
+
 
 class Profile() {
     // хз, надо ли будет выделять объект профиля как что-то отдельное
@@ -88,4 +91,36 @@ fun GetUserPostsSync(
     return response
 
 
+}
+
+fun GetUserById(user_id: Long,callback: (ProfileProto.GetUserResponse) -> Unit){
+    var response: ProfileProto.GetUserResponse
+    thread {
+        var host: String = conf.HOST
+        var port: Int = conf.PORT
+
+        if (conf.DEBAG) {
+            host = conf.DEBAG_HOST
+            port = conf.DEBAG_PORT
+
+        }
+
+        val channel =
+            OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
+
+        val client = userGetterGrpc.newBlockingStub(channel)
+
+        val request =
+            ProfileProto.GetUserRequest.newBuilder().setUserId(user_id).setUserId(user_id)
+                .build()
+
+        response = client.getUserById(request)
+        channel.shutdownNow()
+
+        Handler(Looper.getMainLooper()).post {
+
+            callback.invoke(response)
+        }
+
+    }
 }

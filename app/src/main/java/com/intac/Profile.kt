@@ -1,15 +1,16 @@
 package com.intac
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.protobuf.Empty
+import com.intac.API.Profile.GetUserById
+import com.intac.API.Profile.GetUserPosts
+import com.intac.API.Profile.GetUserPostsSync
+import com.intac.API.Profile.ProfileAdapter
 import com.intac.API.posts.*
 
 import com.intac.databinding.ActivityProfileBinding
@@ -24,7 +25,6 @@ class Profile : AppCompatActivity() {
     var tmpList: ArrayList<Post> = ArrayList<Post>()
 
     var mainPaginationLimit: Long = 6
-    var firstPaginationLimit: Long = 3
 
     var curr_post_id: Long = 0
 
@@ -34,6 +34,7 @@ class Profile : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
         user_id = intent.getLongExtra("id", -1)
@@ -45,6 +46,18 @@ class Profile : AppCompatActivity() {
 
         init()
 
+        GetUserById(user_id) { it ->
+            if (it.code == 0) {
+                binding.textLogin.text = it.login
+                binding.textusername.text = it.name + " " + it.surname
+                binding.numPost.text = it.countOfPosts.toString()
+            } else {
+                //TODO
+                // Ошибка сервера
+            }
+
+        }
+
         GetUserPosts(user_id, mainPaginationLimit, curr_post_id) { it ->
             if (it.postsList.size != 0) {
                 //code == 0 => OK
@@ -53,7 +66,6 @@ class Profile : AppCompatActivity() {
                     binding.rvProfile.visibility = View.VISIBLE
 
                     curr_post_id = it.postsList[it.postsList.size - 1].postId.toLong()
-
 
 
                 } else {
@@ -107,9 +119,9 @@ class Profile : AppCompatActivity() {
             }
 
             if (response.postsList[0].code != 3) {
-                    tmpList = makeListFromPaginationResponse((response))
-                }else
-                    tmpList = ArrayList()
+                tmpList = makeListFromPaginationResponse((response))
+            } else
+                tmpList = ArrayList()
         }
 
         if (!PostsThread.isAlive) {
