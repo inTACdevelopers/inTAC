@@ -60,7 +60,6 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        Log.d("RegTest", "$host:$port")
 
         val client = registrarGrpc.newBlockingStub(channel)
 
