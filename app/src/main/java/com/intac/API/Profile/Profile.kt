@@ -120,6 +120,7 @@ fun GetUserById(user_id: Long, callback: (ProfileProto.GetUserResponse) -> Unit)
         response = client.getUserById(request)
         channel.shutdownNow()
 
+
         Handler(Looper.getMainLooper()).post {
 
             callback.invoke(response)

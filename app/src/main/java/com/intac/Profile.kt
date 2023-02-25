@@ -46,7 +46,7 @@ class Profile : AppCompatActivity() {
 
         init()
 
-        GetUserById(user_id) { it ->
+        GetUserById(user_id) {
             if (it.code == 0) {
                 binding.textLogin.text = it.login
                 binding.textusername.text = it.name + " " + it.surname
