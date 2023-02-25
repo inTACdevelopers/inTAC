@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package profile;
+
+option java_package = "com.intac.profile";
+option java_outer_classname = "ProfileProto";
+
+service userGetter{
+  rpc GetUser_ById(GetUserRequest) returns (GetUserResponse);
+}
+
+
+
+service userUpdater{
+  rpc UpdateName(UpdateNameRequest) returns (UpdateNameResponse);
+  rpc UpdateLogin(UpdateLoginRequest) returns (UpdateLoginResponse);
+  rpc UpdateAbout(UpdateAboutRequest) returns (UpdateAboutResponse);
+  rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse);
+  rpc UpdatePhoto(UpdatePhotoRequest) returns (UpdatePhotoResponse);
+}
+
+message GetUserRequest{
+  int64 user_id = 1;
+}
+message GetUserResponse{
+  int32 code = 1;
+  string state = 2;
+  int32 user_type = 3;
+
+  int64 id = 4;
+  string login = 5;
+  string password = 6;
+  string name = 7;
+  string surname = 8;
+  string company = 9;
+  int64 count_of_posts = 10;
+  bytes profile_photo = 11;
+}
+
+message UpdateNameRequest{
+  int64 user_id = 1;
+  string name = 2;
+
+}
+message UpdateNameResponse{
+  int32 code = 1;
+  string state = 2;
+}
+
+message UpdateLoginRequest{
+  int64 user_id = 1;
+  string login = 2;
+}
+message UpdateLoginResponse{
+  int32 code = 1;
+  string state = 2;
+}
+
+message UpdateAboutRequest{
+  int64 user_id = 1;
+  string about = 2;
+}
+message UpdateAboutResponse{
+  int32 code = 1;
+  string state = 2;
+}
+
+
+message UpdatePasswordRequest{
+  int64 user_id = 1;
+  string password = 2;
+}
+message UpdatePasswordResponse{
+  int32 code = 1;
+  string state = 2;
+}
+
+message UpdatePhotoRequest{
+  int64 user_id = 1;
+  bytes photo_bytes = 2;
+}
+message UpdatePhotoResponse{
+  int32 code = 1;
+  string state = 2;
+}
