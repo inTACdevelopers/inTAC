@@ -7,6 +7,17 @@
     tools:context=".EditPersonalProfile">
 
     <TextView
+        android:id="@+id/textCompanyDescribtion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/editDescriptionBusiness"
+        android:textColor="#282828"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textUserName" />
+
+    <TextView
         android:id="@+id/textChangePasswordBusiness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,19 +40,53 @@
         android:text="@string/btSave"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plainChangeDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/plainChangeBusinessName" />
+
+    <EditText
+        android:id="@+id/plainChangeBusinessName"
+        android:layout_width="239dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints=""
+        android:background="@drawable/rectangle"
+        android:backgroundTint="#D0D0D0"
+        android:drawablePadding="25dp"
+        android:elegantTextHeight="false"
+        android:ems="10"
+        android:freezesText="false"
+        android:hint="@string/editDescriptionBusiness"
+        android:paddingLeft="30dp"
+        android:textAllCaps="false"
+        android:textColor="#197BDD"
+        android:textColorHint="#D0D0D0"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plainChangeUserName" />
 
     <TextView
         android:id="@+id/textUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="50dp"
         android:text="@string/editUserNamePersonal"
         android:textColor="#282828"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textName" />
+        app:layout_constraintTop_toBottomOf="@+id/textCompanyName" />
+
+    <TextView
+        android:id="@+id/textCompanyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/editNameBusiness"
+        android:textColor="#282828"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textChangePhoto" />
 
     <TextView
         android:id="@+id/textDescription"
@@ -52,6 +97,7 @@
         android:text="@string/editDescriptionPersonal"
         android:textColor="#282828"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/textUserName" />
 
     <TextView
@@ -63,14 +109,15 @@
         android:text="@string/editNamePersonal"
         android:textColor="#282828"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/textChangePhoto" />
 
     <EditText
         android:id="@+id/plainChangeUserName"
         android:layout_width="239dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="16dp"
         android:autofillHints=""
         android:background="@drawable/rectangle"
         android:backgroundTint="#D0D0D0"
@@ -86,7 +133,30 @@
         android:textColorHint="#D0D0D0"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plainChangeName" />
+        app:layout_constraintTop_toBottomOf="@+id/plainChangeCompanyName" />
+
+    <EditText
+        android:id="@+id/plainChangeCompanyName"
+        android:layout_width="239dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints=""
+        android:background="@drawable/rectangle"
+        android:backgroundTint="#D0D0D0"
+        android:drawablePadding="25dp"
+        android:elegantTextHeight="false"
+        android:ems="10"
+        android:freezesText="false"
+        android:hint="@string/editNameBusiness"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="30dp"
+        android:textAllCaps="false"
+        android:textColor="#197BDD"
+        android:textColorHint="#D0D0D0"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textChangePhoto" />
 
     <EditText
         android:id="@+id/plainChangeDescription"
@@ -109,7 +179,9 @@
         android:textColorHint="#D0D0D0"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plainChangeUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/plainChangeUserName"
+        android:visibility="gone"
+        />
 
     <EditText
         android:id="@+id/plainChangeName"
@@ -125,12 +197,13 @@
         android:ems="10"
         android:freezesText="false"
         android:hint="@string/editNamePersonal"
-        android:inputType="textEmailAddress"
+        android:inputType="textPersonName"
         android:paddingLeft="30dp"
         android:textAllCaps="false"
         android:textColor="#197BDD"
         android:textColorHint="#D0D0D0"
         android:textSize="14sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textChangePhoto" />
 

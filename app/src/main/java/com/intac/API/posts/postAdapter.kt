@@ -1,11 +1,13 @@
 package com.intac.API.posts
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.intac.API.users.User
 import com.intac.R

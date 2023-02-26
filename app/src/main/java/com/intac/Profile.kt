@@ -44,6 +44,8 @@ class Profile : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.textLogin.text = "Posevin Blog"
+
         init()
 
         GetUserById(user_id) {
@@ -60,6 +62,7 @@ class Profile : AppCompatActivity() {
 
         GetUserPosts(user_id, mainPaginationLimit, curr_post_id) { it ->
             if (it.postsList.size != 0) {
+                binding.avatarEdit.setImageBitmap(PhotoDecoder(it.postsList[0].photoBytes))
                 //code == 0 => OK
                 if (it.postsList[0].code == 0) {
                     adapter.concatLists(makeListFromPaginationResponse(it))
@@ -74,6 +77,10 @@ class Profile : AppCompatActivity() {
                 }
 
             }
+        }
+
+        binding.btProfileEdit.setOnClickListener() {
+
         }
 
         binding.btBackEditProfile.setOnClickListener() {
@@ -134,6 +141,16 @@ class Profile : AppCompatActivity() {
 
     private fun appBack() {
         val intent = Intent(this@Profile, Feed::class.java)
+        startActivity(intent)
+    }
+
+    private fun appPersonalProfileEdit() {
+        val intent = Intent(this@Profile, EditPersonalProfile::class.java)
+        startActivity(intent)
+    }
+
+    private fun appBusinessProfileEdit() {
+        val intent = Intent(this@Profile, EditBusinessProfile::class.java)
         startActivity(intent)
     }
 
