@@ -80,7 +80,7 @@ class Profile : AppCompatActivity() {
         }
 
         binding.btProfileEdit.setOnClickListener() {
-
+            appProfileEdit()
         }
 
         binding.btBackEditProfile.setOnClickListener() {
@@ -144,13 +144,8 @@ class Profile : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun appPersonalProfileEdit() {
+    private fun appProfileEdit() {
         val intent = Intent(this@Profile, EditPersonalProfile::class.java)
-        startActivity(intent)
-    }
-
-    private fun appBusinessProfileEdit() {
-        val intent = Intent(this@Profile, EditBusinessProfile::class.java)
         startActivity(intent)
     }
 
