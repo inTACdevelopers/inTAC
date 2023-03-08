@@ -35,6 +35,11 @@ class Feed : AppCompatActivity() {
     var firstPaginationLimit: Long = 3
 
 
+    private fun buy_action(){
+
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
         user_id = intent.getLongExtra("id", -1)
@@ -148,9 +153,8 @@ class Feed : AppCompatActivity() {
                                 curr_post_id + mainPaginationLimit
 
                             }
-
                             if (response.postsList[0].code != 3)
-                                tmpList = makeListFromPaginationResponse((response))
+                                tmpList = makeListFromPaginationResponse(response)
                             else
                                 tmpList = ArrayList()
                         }
@@ -173,7 +177,7 @@ class Feed : AppCompatActivity() {
 
     private fun init() {
         recyclerView = binding.rvPost
-        adapter = PostAdapter(user_id);
+        adapter = PostAdapter(user_id, applicationContext);
         recyclerView.adapter = adapter
     }
 

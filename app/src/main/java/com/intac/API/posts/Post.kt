@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import android.view.View
 import com.intac.makeposts.PostMakerProto
 import com.intac.makeposts.postGetterGrpc
 import com.intac.makeposts.postMakerGrpc
@@ -29,7 +29,6 @@ class Post(
     var likes: Long = 0,
     var was_like: Int = 0,
     var like: Boolean = false,
-
     var weight: Double = 0.0
 ) {
     fun Like(userId: Long, callback: (PostMakerProto.LikePostResponse) -> Unit) {
@@ -280,6 +279,8 @@ fun PhotoDecoder(bytes: ByteString?): Bitmap {
 
 }
 
+
+
 fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResponse): ArrayList<Post> {
     val out_list = ArrayList<Post>()
 
@@ -292,8 +293,8 @@ fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResp
         out_list.add(post)
     }
     return out_list
-
 }
+
 
 
 
