@@ -2,6 +2,7 @@ package com.intac.API.posts
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 
 import android.view.LayoutInflater
@@ -24,6 +25,18 @@ class PostAdapter(var user_id: Long) : RecyclerView.Adapter<PostAdapter.PostHold
             tvPostName.text = post.title
             tvDescription.text = post.description;
             imagePost.setImageBitmap(post.photoBitmap)
+
+            btBuying.setOnClickListener {
+                /*var url = post.sellerContact
+
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    url = "http://" + url
+                }
+
+                val browserintent = Intent(Intent.ACTION_VIEW)
+                browserintent.setData(Uri.parse(url))
+                startActivity(browserintent)*/
+            }
 
             if(post.like){
                 btLike.isChecked = true

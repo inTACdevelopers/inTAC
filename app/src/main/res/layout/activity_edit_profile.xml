@@ -6,6 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".EditPersonalProfile">
 
+    <EditText
+        android:id="@+id/plainChangeBusinessName2"
+        android:layout_width="239dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints=""
+        android:background="@drawable/rectangle"
+        android:backgroundTint="#D0D0D0"
+        android:drawablePadding="25dp"
+        android:elegantTextHeight="false"
+        android:ems="10"
+        android:freezesText="false"
+        android:hint="@string/editDescriptionBusiness"
+        android:paddingLeft="30dp"
+        android:textAllCaps="false"
+        android:textColor="#197BDD"
+        android:textColorHint="#D0D0D0"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plainChangeBusinessName" />
+
     <TextView
         android:id="@+id/textCompanyDescribtion"
         android:layout_width="wrap_content"
@@ -15,7 +37,7 @@
         android:text="@string/editDescriptionBusiness"
         android:textColor="#282828"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textChangePasswordBusiness"
@@ -42,13 +64,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plainChangeBusinessName" />
+        app:layout_constraintTop_toBottomOf="@+id/plainChangeBusinessName2" />
 
     <EditText
         android:id="@+id/plainChangeBusinessName"
         android:layout_width="239dp"
         android:layout_height="50dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="16dp"
         android:autofillHints=""
         android:background="@drawable/rectangle"
@@ -274,5 +296,16 @@
 
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/plainEditSurname"
+        android:textColor="#282828"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textUserName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

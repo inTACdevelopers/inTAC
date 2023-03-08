@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/plainPostName" />
 
     <EditText
-        android:id="@+id/plainContacts"
+        android:id="@+id/plainWebLink"
         android:layout_width="335dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
@@ -62,7 +62,7 @@
         android:elegantTextHeight="false"
         android:ems="10"
         android:freezesText="false"
-        android:hint="@string/plainContacts"
+        android:hint="@string/plainWebLink"
         android:inputType="textPersonName"
         android:paddingLeft="30dp"
         android:textAllCaps="false"
@@ -123,5 +123,5 @@
         android:textColor="#0043BE"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plainContacts" />
+        app:layout_constraintTop_toBottomOf="@+id/plainWebLink" />
 </androidx.constraintlayout.widget.ConstraintLayout>

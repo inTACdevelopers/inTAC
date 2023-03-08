@@ -65,4 +65,6 @@
     <string name="textSubscribtons">Подписки</string>
     <string name="numSubscribers">100</string>
     <string name="numSubscribtions">100</string>
+    <string name="plainEditSurname">Фамилия</string>
+    <string name="plainWebLink">Ссылка на товар</string>
 </resources>
