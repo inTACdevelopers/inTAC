@@ -16,7 +16,7 @@ import com.intac.API.posts.*
 import com.intac.databinding.ActivityProfileBinding
 
 class Profile : AppCompatActivity() {
-    var user_id: Long = -1
+    var user_id: Int = -1
     lateinit var binding: ActivityProfileBinding
     lateinit var adapter: ProfileAdapter
     lateinit var recyclerView: RecyclerView
@@ -24,9 +24,9 @@ class Profile : AppCompatActivity() {
     var PostsThread: Thread = Thread()
     var tmpList: ArrayList<Post> = ArrayList<Post>()
 
-    var mainPaginationLimit: Long = 6
+    var mainPaginationLimit: Int = 6
 
-    var curr_post_id: Long = 0
+    var curr_post_id: Int = 0
 
     private fun init() {
         recyclerView = binding.rvProfile
@@ -37,7 +37,7 @@ class Profile : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
-        user_id = intent.getLongExtra("id", -1)
+        user_id = intent.getIntExtra("id", -1)
 
         super.onCreate(savedInstanceState)
 
@@ -52,7 +52,7 @@ class Profile : AppCompatActivity() {
             if (it.code == 0) {
                 binding.textLogin.text = it.login
                 binding.textusername.text = it.name + " " + it.surname
-                binding.numPost.text = it.countOfPosts.toString()
+                binding.numPost.text = "-10"
             } else {
                 //TODO
                 // Ошибка сервера
@@ -60,7 +60,7 @@ class Profile : AppCompatActivity() {
 
         }
 
-        GetUserPosts(user_id, mainPaginationLimit, curr_post_id) { it ->
+        GetUserPosts(user_id, mainPaginationLimit, curr_post_id) {
             if (it.postsList.size != 0) {
                 binding.avatarEdit.setImageBitmap(PhotoDecoder(it.postsList[0].photoBytes))
                 //code == 0 => OK
@@ -68,7 +68,7 @@ class Profile : AppCompatActivity() {
                     adapter.concatLists(makeListFromPaginationResponse(it))
                     binding.rvProfile.visibility = View.VISIBLE
 
-                    curr_post_id = it.postsList[it.postsList.size - 1].postId.toLong()
+                    curr_post_id = it.postsList[it.postsList.size - 1].postId
 
 
                 } else {
@@ -121,7 +121,7 @@ class Profile : AppCompatActivity() {
                 curr_post_id
 
             } else {
-                response.postsList[response.postsList.size - 1].postId.toLong()
+                response.postsList[response.postsList.size - 1].postId
 
             }
 

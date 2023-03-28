@@ -15,13 +15,13 @@ import com.intac.API.users.User
 import com.intac.R
 import com.intac.databinding.PostBinding
 
-class PostAdapter(var user_id: Long,var context: Context) :
+class PostAdapter(var user_id: Int,var context: Context) :
     RecyclerView.Adapter<PostAdapter.PostHolder>() {
 
     private var postList = ArrayList<Post>()
 
 
-    class PostHolder(view: View, var user_id: Long, var context: Context) :
+    class PostHolder(view: View, var user_id: Int, var context: Context) :
         RecyclerView.ViewHolder(view) {
         val binding = PostBinding.bind(view)
 

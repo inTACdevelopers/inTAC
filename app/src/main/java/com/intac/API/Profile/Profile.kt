@@ -5,14 +5,19 @@ import android.os.Handler
 import android.os.Looper
 import com.google.protobuf.ByteString
 import com.intac.API.posts.getByteArrFromPhoto
+import com.intac.baseTypes.baseTypesProto.BaseResponse
+import com.intac.baseTypes.baseTypesProto.UserResponse
 import com.intac.conf
 import com.intac.makeposts.PostMakerProto
 import com.intac.makeposts.postGetterGrpc
+import com.intac.user_get.userGetterGrpc
+import  com.intac.profile.profileProto
+import  com.intac.profile.userUpdateGrpc
+import  com.intac.user_get.UserGetProto
 import io.grpc.okhttp.OkHttpChannelBuilder
 import kotlin.concurrent.thread
-import com.intac.profile.ProfileProto
-import com.intac.profile.userGetterGrpc
-import com.intac.profile.userUpdaterGrpc
+
+
 
 class Profile() {
     // хз, надо ли будет выделять объект профиля как что-то отдельное
@@ -20,9 +25,9 @@ class Profile() {
 }
 
 fun GetUserPosts(
-    user_id: Long,
-    limit: Long,
-    lastPostId: Long,
+    user_id: Int,
+    limit: Int,
+    lastPostId: Int,
     callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
 ) {
     var response: PostMakerProto.GetPostPaginatedResponse
@@ -58,9 +63,9 @@ fun GetUserPosts(
 }
 
 fun GetUserPostsSync(
-    user_id: Long,
-    limit: Long,
-    lastPostId: Long
+    user_id: Int,
+    limit: Int,
+    lastPostId: Int
 ): PostMakerProto.GetPostPaginatedResponse {
 
     var response: PostMakerProto.GetPostPaginatedResponse =
@@ -96,8 +101,8 @@ fun GetUserPostsSync(
 
 }
 
-fun GetUserById(user_id: Long, callback: (ProfileProto.GetUserResponse) -> Unit) {
-    var response: ProfileProto.GetUserResponse
+fun GetUserById(user_id: Int, callback: (UserResponse) -> Unit) {
+    var response:UserResponse
     thread {
         var host: String = conf.HOST
         var port: Int = conf.PORT
@@ -113,9 +118,8 @@ fun GetUserById(user_id: Long, callback: (ProfileProto.GetUserResponse) -> Unit)
 
         val client = userGetterGrpc.newBlockingStub(channel)
 
-        val request =
-            ProfileProto.GetUserRequest.newBuilder().setUserId(user_id)
-                .build()
+        val request =UserGetProto.GetUserRequest.newBuilder().setUserId(user_id).build()
+
 
         response = client.getUserById(request)
         channel.shutdownNow()
@@ -131,11 +135,11 @@ fun GetUserById(user_id: Long, callback: (ProfileProto.GetUserResponse) -> Unit)
 
 
 fun UpdateAbout(
-    user_id: Long,
+    user_id: Int,
     about: String,
-    callback: (ProfileProto.UpdateAboutResponse) -> Unit
+    callback: (BaseResponse) -> Unit
 ) {
-    var response: ProfileProto.UpdateAboutResponse
+    var response:BaseResponse
     thread {
         var host: String = conf.HOST
         var port: Int = conf.PORT
@@ -149,10 +153,10 @@ fun UpdateAbout(
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        val client = userUpdaterGrpc.newBlockingStub(channel)
+        val client = userUpdateGrpc.newBlockingStub(channel)
 
         val request =
-            ProfileProto.UpdateAboutRequest.newBuilder().setUserId(user_id).setAbout(about)
+            profileProto.UpdateAboutRequest.newBuilder().setUserId(user_id).setAbout(about)
                 .build()
 
         response = client.updateAbout(request)
@@ -166,8 +170,8 @@ fun UpdateAbout(
     }
 }
 
-fun UpdateName(user_id: Long, name: String, callback: (ProfileProto.UpdateNameResponse) -> Unit) {
-    var response: ProfileProto.UpdateNameResponse
+fun UpdateName(user_id: Int, name: String, callback: (BaseResponse) -> Unit) {
+    var response: BaseResponse
     thread {
         var host: String = conf.HOST
         var port: Int = conf.PORT
@@ -181,10 +185,10 @@ fun UpdateName(user_id: Long, name: String, callback: (ProfileProto.UpdateNameRe
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        val client = userUpdaterGrpc.newBlockingStub(channel)
+        val client = userUpdateGrpc.newBlockingStub(channel)
 
         val request =
-            ProfileProto.UpdateNameRequest.newBuilder().setUserId(user_id).setName(name)
+            profileProto.UpdateNameRequest.newBuilder().setUserId(user_id).setName(name)
                 .build()
 
         response = client.updateName(request)
@@ -199,11 +203,11 @@ fun UpdateName(user_id: Long, name: String, callback: (ProfileProto.UpdateNameRe
 }
 
 fun UpdateLogin(
-    user_id: Long,
+    user_id: Int,
     login: String,
-    callback: (ProfileProto.UpdateLoginResponse) -> Unit
+    callback: (BaseResponse) -> Unit
 ) {
-    var response: ProfileProto.UpdateLoginResponse
+    var response: BaseResponse
     thread {
         var host: String = conf.HOST
         var port: Int = conf.PORT
@@ -217,10 +221,10 @@ fun UpdateLogin(
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        val client = userUpdaterGrpc.newBlockingStub(channel)
+        val client = userUpdateGrpc.newBlockingStub(channel)
 
         val request =
-            ProfileProto.UpdateLoginRequest.newBuilder().setUserId(user_id).setLogin(login)
+            profileProto.UpdateLoginRequest.newBuilder().setUserId(user_id).setLogin(login)
                 .build()
 
         response = client.updateLogin(request)
@@ -235,11 +239,11 @@ fun UpdateLogin(
 }
 
 fun UpdatePassword(
-    user_id: Long,
+    user_id: Int,
     password: String,
-    callback: (ProfileProto.UpdatePasswordResponse) -> Unit
+    callback: (BaseResponse) -> Unit
 ) {
-    var response: ProfileProto.UpdatePasswordResponse
+    var response: BaseResponse
     thread {
         var host: String = conf.HOST
         var port: Int = conf.PORT
@@ -253,10 +257,10 @@ fun UpdatePassword(
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        val client = userUpdaterGrpc.newBlockingStub(channel)
+        val client = userUpdateGrpc.newBlockingStub(channel)
 
         val request =
-            ProfileProto.UpdatePasswordRequest.newBuilder().setUserId(user_id)
+            profileProto.UpdatePasswordRequest.newBuilder().setUserId(user_id)
                 .setPassword(password.hashCode().toString())
                 .build()
 
@@ -272,11 +276,11 @@ fun UpdatePassword(
 }
 
 fun UpdatePhoto(
-    user_id: Long,
+    user_id: Int,
     photo: Bitmap,
-    callback: (ProfileProto.UpdatePhotoResponse) -> Unit
+    callback: (BaseResponse) -> Unit
 ) {
-    var response: ProfileProto.UpdatePhotoResponse
+    var response: BaseResponse
 
     thread {
         var host: String = conf.HOST
@@ -291,10 +295,10 @@ fun UpdatePhoto(
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        val client = userUpdaterGrpc.newBlockingStub(channel)
+        val client = userUpdateGrpc.newBlockingStub(channel)
 
         val request =
-            ProfileProto.UpdatePhotoRequest.newBuilder().setUserId(user_id)
+            profileProto.UpdatePhotoRequest.newBuilder().setUserId(user_id)
                 .setPhotoBytes(ByteString.copyFrom(getByteArrFromPhoto(photo)))
                 .build()
 

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.intac.authorization";
+option java_outer_classname = "AuthorizationProto";
+
+import "base_types.proto";
+
+service AuthorizeService{
+  rpc SingIn(SingInRequest) returns (basetypes.UserResponse);
+  rpc SingInByToken (SingInByTokenRequest) returns (basetypes.UserResponse);
+}
+
+message SingInRequest{
+  string login = 1;
+  string password = 2;
+
+}
+
+message SingInByTokenRequest{
+  bytes token = 1;
+}
+

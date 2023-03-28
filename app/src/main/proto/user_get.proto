@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server.Protos";
+
+option java_package = "com.intac.user_get";
+option java_outer_classname = "UserGetProto";
+
+import "base_types.proto";
+
+
+
+service userGetter{
+  rpc GetUser_ById(GetUserRequest) returns (basetypes.UserResponse);
+}
+
+message GetUserRequest{
+  int32 user_id = 1;
+}

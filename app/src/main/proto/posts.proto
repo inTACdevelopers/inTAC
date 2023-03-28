@@ -29,7 +29,7 @@ message makePostRequest{
   string post_title = 3;
   string post_description = 4;
   string seller_contact = 5;
-  int64 user_id = 6;
+  int32 user_id = 6;
 
 }
 
@@ -39,16 +39,16 @@ message makePostResponse{
 }
 
 message GetPostRequest{
-  int64 post_id = 1;
-  int64 limit = 2;
+  int32 post_id = 1;
+  int32 limit = 2;
   string session_name = 3;
-  int64 user_id = 4;
+  int32 user_id = 4;
 }
 
 message GetUserPostRequest{
-  int64 post_id = 1;
-  int64 limit = 2;
-  int64 user_id = 3;
+  int32 post_id = 1;
+  int32 limit = 2;
+  int32 user_id = 3;
 }
 
 message GetPostResponse{
@@ -61,7 +61,7 @@ message GetPostResponse{
   string seller_contact = 6;
   string creation_time = 7;
   int32 post_id = 8;
-  int64 user_id = 9;
+  int32 user_id = 9;
   bool like = 10;
 }
 
@@ -80,8 +80,8 @@ message GetFirstPostIdResponse{
 }
 
 message LikePostRequest{
-  int64 from_user = 1;
-  int64 post_id = 2;
+  int32 from_user = 1;
+  int32 post_id = 2;
 }
 message LikePostResponse{
   int32 code = 1;
@@ -89,8 +89,8 @@ message LikePostResponse{
 }
 
 message UnLikePostRequest{
-  int64 from_user = 1;
-  int64 post_id = 2;
+  int32 from_user = 1;
+  int32 post_id = 2;
 }
 message UnLikePostResponse{
   int32 code = 1;
