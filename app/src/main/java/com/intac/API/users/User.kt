@@ -2,22 +2,24 @@ package com.intac.API.users
 
 
 import android.os.Looper
+import android.provider.ContactsContract.CommonDataKinds.BaseTypes
 import android.util.Log
-import com.intac.authorization.authorizerGrpc
-import com.intac.authorization.AuthorizerProto
+import com.google.protobuf.Timestamp
+import com.intac.authorization.AuthorizeServiceGrpc
+import com.intac.authorization.AuthorizationProto
 import com.intac.conf
 import com.intac.makeposts.PostMakerProto
-import com.intac.registration.RegistrarProto
-import com.intac.registration.registrarGrpc
+import com.intac.registration.RegistrationProto
+import com.intac.registration.RegistrationServiceGrpc
 import io.grpc.okhttp.OkHttpChannelBuilder
-import com.intac.sessions.SessionServiceProto
-import com.intac.sessions.postSessionsServiceGrpc
+import com.intac.PostSession.postSessionsServiceGrpc
+import  com.intac.baseTypes.baseTypesProto
+import com.intac.PostSession.PostSessionProto
 import okio.ByteString
 import java.util.logging.Handler
 import kotlin.concurrent.thread
 
-// Класс описываюсщий сущность пользователя
-// Company - не обязательный параметр
+
 class User(
     var id: Int = 0,
     var login: String,
@@ -31,20 +33,9 @@ class User(
 }
 
 
-fun SingIn(user: User): RegistrarProto.SingInResponse {
+fun SingIn(user: User): RegistrationProto.SingUpResponse {
 
-// Принимает объект User с заполнеными полями (кроме id)
-// Возращает объект singInResponse с параметрами
-//  int code = 1
-// string state = 2;
-//
-// Параметр state:
-// - Текстовое значение для code
-// Параметр code:
-// 0 - всё хорошо (state = OK)
-// 1 - Ошибка существования пользователя с таким логином (state = User already exist)
-// 2 - Ошибка существования комании с таким названием (state = Company already exist)
-// 3 - Ошибка при работе с базой данных (state = Server Error (#db))
+
     var host: String = conf.HOST
     var port: Int = conf.PORT
 
@@ -53,7 +44,8 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
         port = conf.DEBAG_PORT
 
     }
-    var response: RegistrarProto.SingInResponse = RegistrarProto.SingInResponse.getDefaultInstance()
+    var response: RegistrationProto.SingUpResponse =
+        RegistrationProto.SingUpResponse.getDefaultInstance()
 
     val singUpThread: Thread = Thread(Runnable {
 
@@ -61,17 +53,17 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
 
-        val client = registrarGrpc.newBlockingStub(channel)
+        val client = RegistrationServiceGrpc.newBlockingStub(channel)
 
 
         val request =
-            RegistrarProto.SingInRequest.newBuilder().setLogin(user.login)
+            RegistrationProto.SingUpRequest.newBuilder().setLogin(user.login)
                 .setPassword(user.pass.hashCode().toString())
                 .setName(user.name).setCompany(user.company).setSurname(user.surname)
-                .setBirthDate(user.birth).build()
+                .setBirthDate(Timestamp.getDefaultInstance()).build()
 
 
-        response = client.singIn(request)
+        response = client.singUp(request)
         channel.shutdownNow()
 
     })
@@ -83,33 +75,10 @@ fun SingIn(user: User): RegistrarProto.SingInResponse {
 }
 
 
-fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
-    // Возращает объект SingUpResponse с параметрами
-//  int code = 1
-//  string state = 2;
-//  int32 user_type = 3;
-//
-//  int32 id = 4;
-//  string login = 5;
-//  string password = 6;
-//  string name = 7;
-//  string surname = 8;
-//  string company = 9;
-//
-// Параметр state:
-// - Текстовое значение для code
-// Параметр code:
-// 0 - всё хорошо (state = OK)
-// 1 - Ошибка, пользователя не существует (state = No such user)
-//
-// Параметр user_type:
-// Говорит о типе пользователя
-// 0 - покупаетль
-// 1 - продавец (при регистрации было указано поле company)
-//
-// Все остальные параметры характеризуют сущность пользователя
-    var response: AuthorizerProto.SingUpResponse =
-        AuthorizerProto.SingUpResponse.getDefaultInstance()
+fun SingUp(login: String, pass: String): baseTypesProto.UserResponse {
+
+    var response:baseTypesProto.UserResponse =
+        baseTypesProto.UserResponse.getDefaultInstance()
 
     val singUpThread: Thread = Thread(Runnable {
         var host: String = conf.HOST
@@ -124,14 +93,14 @@ fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        val client = authorizerGrpc.newBlockingStub(channel)
+        val client = AuthorizeServiceGrpc.newBlockingStub(channel)
 
 
         val request =
-            AuthorizerProto.SingUpRequest.newBuilder().setLogin(login)
+            AuthorizationProto.SingInRequest.newBuilder().setLogin(login)
                 .setPassword(pass.hashCode().toString()).build()
 
-        response = client.singUp(request)
+        response = client.singIn(request)
 
         channel.shutdownNow()
     })
@@ -141,8 +110,11 @@ fun SingUp(login: String, pass: String): AuthorizerProto.SingUpResponse {
     return response
 }
 
-fun SingUpByToken(token: com.google.protobuf.ByteString, callback: (AuthorizerProto.SingUpResponse) -> Unit) {
-    var response: AuthorizerProto.SingUpResponse
+fun SingUpByToken(
+    token: com.google.protobuf.ByteString,
+    callback: (baseTypesProto.UserResponse) -> Unit
+) {
+    var response: baseTypesProto.UserResponse
 
     thread {
         var host: String = conf.HOST
@@ -157,13 +129,13 @@ fun SingUpByToken(token: com.google.protobuf.ByteString, callback: (AuthorizerPr
         val channel =
             OkHttpChannelBuilder.forAddress(host, port).usePlaintext().build()
 
-        val client = authorizerGrpc.newBlockingStub(channel)
+        val client = AuthorizeServiceGrpc.newBlockingStub(channel)
 
         val request =
-            AuthorizerProto.SingUpByTokenRequest.newBuilder().setToken(token)
+            AuthorizationProto.SingInByTokenRequest.newBuilder().setToken(token)
                 .build()
 
-        response = client.singUpByToken(request)
+        response = client.singInByToken(request)
 
 
         channel.shutdownNow()
@@ -176,10 +148,10 @@ fun SingUpByToken(token: com.google.protobuf.ByteString, callback: (AuthorizerPr
 
 }
 
-fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionResponse) -> Unit) {
+fun CreateSession(userId: Int, callback: (baseTypesProto.BaseResponse) -> Unit) {
 
 
-    var response: SessionServiceProto.CreatePostSessionResponse
+    var response: baseTypesProto.BaseResponse
 
     thread {
         var host: String = conf.HOST
@@ -196,7 +168,7 @@ fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionR
         val client = postSessionsServiceGrpc.newBlockingStub(channel)
 
         val request =
-            SessionServiceProto.CreatePostSessionRequest.newBuilder().setUserId(userId.toLong())
+            PostSessionProto.CreatePostSessionRequest.newBuilder().setUserId(userId)
                 .build()
 
         response = client.createPostSession(request)
@@ -214,10 +186,8 @@ fun CreateSession(userId: Int, callback: (SessionServiceProto.CreatePostSessionR
 }
 
 
-fun DropSessionSync(session_name: String) {
-
-
-    var response: SessionServiceProto.DropSessionResponse
+fun DropSessionSync(userId: Int) {
+    var response: baseTypesProto.BaseResponse
 
     thread {
         var host: String = conf.HOST
@@ -234,7 +204,7 @@ fun DropSessionSync(session_name: String) {
         val client = postSessionsServiceGrpc.newBlockingStub(channel)
 
         val request =
-            SessionServiceProto.DropSessionRequest.newBuilder().setSessionName(session_name)
+            PostSessionProto.DropSessionRequest.newBuilder().setUserId(userId)
                 .build()
 
         response = client.dropPostSession(request)

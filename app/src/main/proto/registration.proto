@@ -1,24 +1,25 @@
 syntax = "proto3";
 
-package registration;
+import "google/protobuf/timestamp.proto";
 
 option java_package = "com.intac.registration";
-option java_outer_classname = "RegistrarProto";
+option java_outer_classname = "RegistrationProto";
 
-service registrar{
-  rpc SingIn(SingInRequest) returns (SingInResponse);
+service RegistrationService{
+  rpc SingUp(SingUpRequest) returns (SingUpResponse);
 }
 
-message SingInRequest{
+message SingUpRequest{
   string login = 1 ;
   string password = 2;
   string surname = 3;
-  string name = 4 ;
+  string name = 4;
   string company = 5;
-  string birth_date = 6;
-  bytes token = 7 ;
+  google.protobuf.Timestamp birth_date = 6;
+
 }
-message SingInResponse{
+message SingUpResponse{
   int32 code = 1;
   string state = 2;
+  bytes token =3;
 }

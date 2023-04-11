@@ -23,16 +23,16 @@ class Feed : AppCompatActivity() {
     lateinit var adapter: PostAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var session_name: String
-    var user_id: Long = -1
+    var user_id: Int = -1
 
-    var curr_post_id: Long = 0
-    var start_post_id: Long = 0
+    var curr_post_id: Int = 0
+    var start_post_id: Int = 0
 
     var PostsThread: Thread = Thread()
     var tmpList: ArrayList<Post> = ArrayList<Post>()
 
-    var mainPaginationLimit: Long = 3
-    var firstPaginationLimit: Long = 3
+    var mainPaginationLimit: Int = 3
+    var firstPaginationLimit: Int = 3
 
 
     private fun buy_action(){
@@ -42,7 +42,7 @@ class Feed : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
-        user_id = intent.getLongExtra("id", -1)
+        user_id = intent.getIntExtra("id", -1)
 
 
         super.onCreate(savedInstanceState)
@@ -112,17 +112,14 @@ class Feed : AppCompatActivity() {
     }
 
     override fun onStop() {
-        DropSessionSync(session_name)
+        DropSessionSync(user_id)
         super.onStop()
     }
 
     override fun onStart() {
         super.onStart()
 
-        CreateSession(user_id.toInt()) {
-            session_name = it.sessionName
-
-
+        CreateSession(user_id) {
             if (it.code == 0) {
                 getPostPaginated(curr_post_id, firstPaginationLimit, session_name,user_id) { it ->
                     if(it.postsList != null && it.postsList[0].code==0) {

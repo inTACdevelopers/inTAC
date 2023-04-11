@@ -19,19 +19,19 @@ import java.io.InputStream
 import kotlin.concurrent.thread
 
 class Post(
-    var id: Long = 0,
+    var id: Int = 0,
     var title: String,
     var description: String,
     var sellerContact: String,
     var photoBitmap: Bitmap,
-    var from_user: Long,
+    var from_user: Int,
     var creation_time: String = "",
-    var likes: Long = 0,
+    var likes: Int = 0,
     var was_like: Int = 0,
     var like: Boolean = false,
     var weight: Double = 0.0
 ) {
-    fun Like(userId: Long, callback: (PostMakerProto.LikePostResponse) -> Unit) {
+    fun Like(userId: Int, callback: (PostMakerProto.LikePostResponse) -> Unit) {
         var response: PostMakerProto.LikePostResponse
 
         thread {
@@ -62,7 +62,7 @@ class Post(
         }
     }
 
-    fun UnLike(userId: Long, callback: (PostMakerProto.UnLikePostResponse) -> Unit) {
+    fun UnLike(userId: Int, callback: (PostMakerProto.UnLikePostResponse) -> Unit) {
         var response: PostMakerProto.UnLikePostResponse
 
         thread {
@@ -129,7 +129,7 @@ fun makePost(post: Post): PostMakerProto.makePostResponse {
             .setPhotoBytes(ByteString.copyFrom(getByteArrFromPhoto(post.photoBitmap)))
             .setFileName("TEST")
             .setPostTitle(post.title).setPostDescription(post.description)
-            .setSellerContact(post.sellerContact).setUserId(post.from_user.toLong())
+            .setSellerContact(post.sellerContact).setUserId(post.from_user)
             .build()
 
         response = client.makePost(request)
@@ -143,7 +143,7 @@ fun makePost(post: Post): PostMakerProto.makePostResponse {
     return response
 }
 
-fun getPost(post_id: Long): PostMakerProto.GetPostResponse {
+fun getPost(post_id: Int): PostMakerProto.GetPostResponse {
 
     // Функция получения поста из базы данных (пока не нужна, поэтому чуть недоделана)
     // На вход принимает id поста, который нужно получится
@@ -196,10 +196,10 @@ fun getByteArrFromPhoto(bitmap: Bitmap): ByteArray {
 }
 
 fun getPostPaginated(
-    post_id: Long,
-    limit: Long,
+    post_id: Int,
+    limit: Int,
     session_name: String,
-    user_id: Long,
+    user_id: Int,
     callback: (PostMakerProto.GetPostPaginatedResponse) -> Unit
 ) {
     var response: PostMakerProto.GetPostPaginatedResponse
@@ -234,10 +234,10 @@ fun getPostPaginated(
 }
 
 fun getPostPaginatedSync(
-    post_id: Long,
-    limit: Long,
+    post_id: Int,
+    limit: Int,
     session_name: String,
-    user_id: Long
+    user_id: Int
 ): PostMakerProto.GetPostPaginatedResponse {
 
     val response: PostMakerProto.GetPostPaginatedResponse
@@ -286,7 +286,7 @@ fun makeListFromPaginationResponse(response: PostMakerProto.GetPostPaginatedResp
 
     for (item in response.postsList) {
         val post = Post(
-            item.postId.toLong(), item.postTitle, item.postDescription, item.sellerContact,
+            item.postId, item.postTitle, item.postDescription, item.sellerContact,
             PhotoDecoder(item.photoBytes), item.userId, item.creationTime
         )
         post.like = item.like

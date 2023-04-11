@@ -4,7 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.intac.API.users.*
+import com.intac.API.users.SingUp
+//import com.intac.API.users.*
 
 import com.intac.databinding.ActivityMainBinding
 
